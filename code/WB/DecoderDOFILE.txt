@@ -1,0 +1,24 @@
+vsim -gui work.decoder
+add wave -position insertpoint  \
+sim:/decoder/decIN \
+sim:/decoder/decOUT \
+sim:/decoder/EN
+force -freeze sim:/decoder/EN 0 0
+run
+force -freeze sim:/decoder/EN 1 0
+force -freeze sim:/decoder/decIN 000 0
+run
+force -freeze sim:/decoder/decIN 001 0
+run
+force -freeze sim:/decoder/decIN 010 0
+run
+force -freeze sim:/decoder/decIN 011 0
+run
+force -freeze sim:/decoder/decIN 100 0
+run
+force -freeze sim:/decoder/decIN 101 0
+run
+force -freeze sim:/decoder/decIN 110 0
+run
+force -freeze sim:/decoder/decIN 111 0
+run

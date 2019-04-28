@@ -1,0 +1,84 @@
+vsim -gui work.registerfile
+add wave -position insertpoint  \
+sim:/registerfile/CLK \
+sim:/registerfile/RST \
+sim:/registerfile/src1exist \
+sim:/registerfile/src2exist \
+sim:/registerfile/dst1exist \
+sim:/registerfile/dst2exist \
+sim:/registerfile/WB1 \
+sim:/registerfile/WB2 \
+sim:/registerfile/add1 \
+sim:/registerfile/add2 \
+sim:/registerfile/src1 \
+sim:/registerfile/src2 \
+sim:/registerfile/dst1 \
+sim:/registerfile/dst2 \
+sim:/registerfile/data1 \
+sim:/registerfile/data2 \
+sim:/registerfile/dataSrc1 \
+sim:/registerfile/dataSrc2 \
+sim:/registerfile/dataDst1 \
+sim:/registerfile/dataDst2 \
+sim:/registerfile/decWB1OUT \
+sim:/registerfile/decWB2OUT \
+sim:/registerfile/decWBsORed \
+sim:/registerfile/R0in \
+sim:/registerfile/R1in \
+sim:/registerfile/R2in \
+sim:/registerfile/R3in \
+sim:/registerfile/R4in \
+sim:/registerfile/R5in \
+sim:/registerfile/R6in \
+sim:/registerfile/R7in \
+sim:/registerfile/R0out \
+sim:/registerfile/R1out \
+sim:/registerfile/R2out \
+sim:/registerfile/R3out \
+sim:/registerfile/R4out \
+sim:/registerfile/R5out \
+sim:/registerfile/R6out \
+sim:/registerfile/R7out
+force -freeze sim:/registerfile/CLK 1 0, 0 {50 ps} -r 100
+force -freeze sim:/registerfile/RST 1 0
+run 50
+force -freeze sim:/registerfile/RST 0 0
+run 50
+force -freeze sim:/registerfile/WB1 1 0
+force -freeze sim:/registerfile/WB2 1 0
+force -freeze sim:/registerfile/src1exist 0 0
+force -freeze sim:/registerfile/src2exist 0 0
+force -freeze sim:/registerfile/dst1exist 0 0
+force -freeze sim:/registerfile/dst2exist 0 0
+force -freeze sim:/registerfile/add1 000 0
+force -freeze sim:/registerfile/add2 001 0
+force -freeze sim:/registerfile/data1 0000000000000000 0
+force -freeze sim:/registerfile/data2 0000000000000001 0
+run
+force -freeze sim:/registerfile/add1 010 0
+force -freeze sim:/registerfile/add2 011 0
+force -freeze sim:/registerfile/data1 0000000000000010 0
+force -freeze sim:/registerfile/data2 0000000000000011 0
+run
+force -freeze sim:/registerfile/add1 100 0
+force -freeze sim:/registerfile/add2 101 0
+force -freeze sim:/registerfile/data1 0000000000000100 0
+force -freeze sim:/registerfile/data2 0000000000000101 0
+run
+force -freeze sim:/registerfile/add1 110 0
+force -freeze sim:/registerfile/add2 111 0
+force -freeze sim:/registerfile/data1 0000000000000110 0
+force -freeze sim:/registerfile/data2 0000000000000111 0
+run
+run
+force -freeze sim:/registerfile/src1exist 1 0
+force -freeze sim:/registerfile/src2exist 1 0
+force -freeze sim:/registerfile/dst1exist 1 0
+force -freeze sim:/registerfile/dst2exist 1 0
+force -freeze sim:/registerfile/WB1 0 0
+force -freeze sim:/registerfile/WB2 0 0
+force -freeze sim:/registerfile/src1 001 0
+force -freeze sim:/registerfile/src2 010 0
+force -freeze sim:/registerfile/dst1 011 0
+force -freeze sim:/registerfile/dst2 100 0
+run
