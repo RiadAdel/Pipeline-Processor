@@ -2,6 +2,9 @@ library IEEE;
 USE IEEE.std_logic_1164.all;
 package constants is
 
+-- write this line in your file to use the constants
+--use work.constants.all;
+
 -- one operand constants
 constant NOP: std_logic_vector(4 downto 0)  :="00000";
 constant SETC: std_logic_vector(4 downto 0) :="00001";
