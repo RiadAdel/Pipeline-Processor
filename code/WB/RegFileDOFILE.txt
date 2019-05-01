@@ -39,7 +39,7 @@ sim:/registerfile/R4out \
 sim:/registerfile/R5out \
 sim:/registerfile/R6out \
 sim:/registerfile/R7out
-force -freeze sim:/registerfile/CLK 1 0, 0 {50 ps} -r 100
+force -freeze sim:/registerfile/CLK 0 0, 1 {50 ps} -r 100
 force -freeze sim:/registerfile/RST 1 0
 run 50
 force -freeze sim:/registerfile/RST 0 0
