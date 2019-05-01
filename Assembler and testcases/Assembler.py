@@ -21,12 +21,12 @@ instruction = {
     "in"  :	"00111",
     #____________TWO_operand_____________
     "mov" : "01000",
-	"add" : "01001",
-	"sub" : "01010",
-	"and" : "01011",
-	"or"  : "01100",
-	"shl" : "01101",
-	"shr" : "01110",
+    "add" : "01001",
+    "sub" : "01010",
+    "and" : "01011",
+    "or"  : "01100",
+    "shl" : "01101",
+    "shr" : "01110",
     #____________MEMORY_operand_____________
     "push": "10000",
     "pop" : "10001",
@@ -43,6 +43,40 @@ instruction = {
     "rti" : "11110"
 
 }
+
+instructionSet = [
+    #____________ONE_operand_____________
+    "nop",
+    "setc",
+    "clrc",
+    "not",
+    "inc",
+    "dec",
+    "out",
+    "in", 
+    #____________TWO_operand_____________
+    "mov",
+    "add",
+    "sub",
+    "and",
+    "or", 
+    "shl",
+    "shr",
+    #____________MEMORY_operand__________
+    "push",
+    "pop",
+    "ldm",
+    "ldd",
+    "std",
+    #____________Branch_and_Change_of_Control_Operations_____________
+    "jz", 
+    "jn", 
+    "jc", 
+    "jmp",
+    "call",
+    "ret",
+    "rti"
+]
 
 register = {
    "r0" : "000",
@@ -75,7 +109,7 @@ OneOperandDst = ["pop" , "in" , "not" , "inc" , "dec" ]
 
 address = -1
 for i in range(0, len(command)):
-    command[i] = command[i].lower().replace("\n","")
+    command[i] = command[i].lower().replace("\n","").replace("\t","")
     commandList = command[i].split("#")[0].split(" ")
     commandList = list(filter(lambda a: a != "", commandList))
     instr = ""
@@ -99,11 +133,11 @@ for i in range(0, len(command)):
             opr1 = commandList[1]
             opr2 = commandList[3]
         #------------------------------------------------------------------------------
-        if (opr1 !="" and opr2==""):
+        if (opr1 != "" and opr2 == ""):
             if (instr in OneOperandDst):
                     opr2 = opr1
                     opr1 = ""
-        elif (opr1!="" & opr2 !=""):
+        elif (opr1 != "" and opr2 != ""):
             if (instr == "shl" or instr == "shr"):
                 temp = opr1
                 opr1 = opr2
@@ -122,39 +156,46 @@ for i in range(0, len(command)):
         #------------------------------------------------------------------------------
 
 
+outFilePath = filePath.split('.')[0] 
+f = open(outFilePath+"BINARY.txt", "w")
 
-f = open("output10.txt", "w")
-get_bin = lambda x , n:format(x , 'b').zfill(n)
+def stringHextoBinary(x,forma = '016b'):
+    i = int("0x"+x,16)
+    return str(format(i & 0xffff, forma))
+
+memAddress = 0
 for c in pCommandList:
-    #print (c)
-    data1 = ""
-    data2 = ""
-    
-    if(c.instr not in instruction):    #.org  # handle hex
-        integer = int(c.instr)
-        integer = get_bin(integer, 16)
-        f.write(str(integer) + "\n")
+
+    while (c.address > memAddress):
+        f.write("XXXXXXXXXXXXXXXX\n")
+        memAddress += 1
+
+    #write instr or hex number
+    if(c.instr not in instructionSet):    #.org  # handle hex
+        binary = stringHextoBinary(c.instr, '016b')
+        f.write(binary + "\n")
+        memAddress += 1
         continue
     
     f.write(instruction[c.instr])
-    #m3ltsh srcExist w dstExist lsa
-    #mgrbtsh kter
-    #el print 3moman msh 5lsan lsa
     
+    #write srcExist 
     if(c.reg1 != ""):   
         f.write('1')
     else :
         f.write('0')
+        
+    #write dstExist
     if (c.reg2!= ""):
         f.write('1')
     else :
         f.write('0')
     
+    #write src or immediate
     if(c.reg1 != ""):
         if(c.reg1 not in register):    #.org
-            integer = int(c.reg1)
-            integer = get_bin(integer, 6)
-            f.write(str(integer))
+            binary = stringHextoBinary(c.reg1, '06b')
+            f.write(binary)
         else:
             f.write("000")
             f.write(register[c.reg1])
@@ -162,15 +203,14 @@ for c in pCommandList:
         f.write("000000")
     
     
-    
+    #write dst 
     if(c.reg2 != ""): 
         f.write(register[c.reg2])
     else :
         f.write("000")
 
-   
-    
     f.write("\n")
+    memAddress += 1
 f.close()
    
         

@@ -44,7 +44,7 @@ rti
 
 #check on load use
 .ORG 200
-SET C      #C-->1
+SETC       #C-->1
 POP R6     #R6=300, SP=FFFFFFFF
 Call R6    #SP=FFFFFFFD, M[FFFFFFFF]=half next PC,M[FFFFFFFE]=other half next PC
           #try interrup here
