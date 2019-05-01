@@ -17,7 +17,7 @@ constant IIN: std_logic_vector(4 downto 0)  :="00111";
 --two operand constants
 constant MOV: std_logic_vector(4 downto 0)  :="01000";
 constant ADD: std_logic_vector(4 downto 0)  :="01001";
-constant SUB: std_logic_vector(4 downto 0)  :="01010";
+constant SSUB: std_logic_vector(4 downto 0)  :="01010";
 constant AAND: std_logic_vector(4 downto 0) :="01011";
 constant OOR: std_logic_vector(4 downto 0)  :="01100";
 constant SHL: std_logic_vector(4 downto 0)  :="01101";
@@ -40,7 +40,23 @@ constant CALL: std_logic_vector(4 downto 0)  :="11100";
 constant RET: std_logic_vector(4 downto 0)   :="11101";
 constant RTI: std_logic_vector(4 downto 0)   :="11110";
 
+----- alu operations-------
+
+constant ALUFEQUAL0: std_logic_vector(3 downto 0)  :="0000";
+constant ALUSETC: std_logic_vector(3 downto 0)     :="0001";
+constant ALUCLEARC: std_logic_vector(3 downto 0)   :="0010";
+constant ALUNOT: std_logic_vector(3 downto 0)      :="0011";
+constant ALUINC: std_logic_vector(3 downto 0)      :="0100";
+constant ALUDEC: std_logic_vector(3 downto 0)      :="0101";
+constant ALUADD: std_logic_vector(3 downto 0)      :="0110";
+constant ALUSUB: std_logic_vector(3 downto 0)      :="0111";
+constant ALUAND: std_logic_vector(3 downto 0)      :="1000";
 
 
+constant ALUOR: std_logic_vector(3 downto 0)       :="1001";
+constant ALUSHL: std_logic_vector(3 downto 0)      :="1010";
+constant ALUSHR: std_logic_vector(3 downto 0)      :="1011";
+constant ALUFEQUALB: std_logic_vector(3 downto 0)  :="1100";
+constant ALUFEQUALZZ: std_logic_vector(3 downto 0)  :="1101";
 
 end constants;
