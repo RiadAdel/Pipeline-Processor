@@ -45,7 +45,7 @@ instruction = {
 }
 
 register = {
-    "r0" : "000",
+   "r0" : "000",
 	"r1" : "001",
 	"r2" : "010",
 	"r3" : "011",
@@ -70,6 +70,8 @@ else:
     filePath = input("Enter file path:\n")
 readCommands(filePath)
 pCommandList = []
+
+OneOperandDst = ["pop" , "in" , "not" , "inc" , "dec" ]
 
 address = -1
 for i in range(0, len(command)):
@@ -97,14 +99,30 @@ for i in range(0, len(command)):
             opr1 = commandList[1]
             opr2 = commandList[3]
         #------------------------------------------------------------------------------
+        if (opr1 !="" and opr2==""):
+            if (instr in OneOperandDst):
+                    opr2 = opr1
+                    opr1 = ""
+        elif (opr1!="" & opr2 !=""):
+            if (instr == "shl" or instr == "shr"):
+                temp = opr1
+                opr1 = opr2
+                opr2 = temp
+            elif (instr == "ldm"):
+                 pCommandList.append(processedCommand(instr, "" , opr1, currentAddress))
+                 pCommandList.append(processedCommand(opr2, "" , "", currentAddress+1))
+                 address+=1
+                 
+                 
         
         address += 1
-        if(instr != ".org"):
+        if(instr != ".org" and instr!="ldm"):
             reg1, reg2 = opr1, opr2
             pCommandList.append(processedCommand(instr, reg1 , reg2, currentAddress))
         #------------------------------------------------------------------------------
-        
-        
+
+
+
 f = open("output10.txt", "w")
 get_bin = lambda x , n:format(x , 'b').zfill(n)
 for c in pCommandList:
@@ -112,7 +130,7 @@ for c in pCommandList:
     data1 = ""
     data2 = ""
     
-    if(c.instr not in instruction):    #.org
+    if(c.instr not in instruction):    #.org  # handle hex
         integer = int(c.instr)
         integer = get_bin(integer, 16)
         f.write(str(integer) + "\n")
@@ -123,16 +141,34 @@ for c in pCommandList:
     #mgrbtsh kter
     #el print 3moman msh 5lsan lsa
     
-    if(c.reg1 != ""):    
-        f.write(register[c.reg1])
-
-    if(c.reg2 != ""):
-        if(c.reg2 not in register):    #.org
-            integer = int(c.reg2)
-            integer = get_bin(integer, 4)
+    if(c.reg1 != ""):   
+        f.write('1')
+    else :
+        f.write('0')
+    if (c.reg2!= ""):
+        f.write('1')
+    else :
+        f.write('0')
+    
+    if(c.reg1 != ""):
+        if(c.reg1 not in register):    #.org
+            integer = int(c.reg1)
+            integer = get_bin(integer, 6)
             f.write(str(integer))
         else:
-            f.write(register[c.reg2])
+            f.write("000")
+            f.write(register[c.reg1])
+    else:
+        f.write("000000")
+    
+    
+    
+    if(c.reg2 != ""): 
+        f.write(register[c.reg2])
+    else :
+        f.write("000")
+
+   
     
     f.write("\n")
 f.close()
