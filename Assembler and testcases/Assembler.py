@@ -160,7 +160,13 @@ outFilePath = filePath.split('.')[0]
 f = open(outFilePath+"BINARY.txt", "w")
 
 def stringHextoBinary(x,forma = '016b'):
-    i = int("0x"+x,16)
+    if(x[0] == '-'):
+        x.replace('-',"-0x")
+    else:
+        x = "0x" + x
+    i = int(x, 16)
+    if(forma == '06b'):
+        i %= 16
     return str(format(i & 0xffff, forma))
 
 memAddress = 0

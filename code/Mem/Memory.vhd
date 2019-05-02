@@ -1,11 +1,13 @@
 LIBRARY IEEE;
 USE IEEE.std_logic_1164.all;
+use work.constants.all;
 
 ENTITY memory IS
 	PORT(
 		ID_EX_dataSrc1, ID_EX_dataSrc2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ID_EX_dataDst1, ID_EX_dataDst2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		SP : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		INSTR  : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
 		R1, R2 : IN  STD_LOGIC;
 		W1, W2 : IN  STD_LOGIC;
 		R , W  : OUT STD_LOGIC;
@@ -21,9 +23,9 @@ ARCHITECTURE archMemory OF memory IS
 BEGIN 
 	
 	-- m7tag yt3ml lsa
-	muxSelection(0) <= W2;
-	muxSelection(1) <= W2;
-	muxSelection(2) <= W2;
+	muxSelection(0) <= R1 AND (NOT R2);
+	muxSelection(1) <= W1 AND (NOT W2);
+	muxSelection(2) <= '1' WHEN (INSTR = PUSH OR INSTR = POP OR INSTR = PUSH OR INSTR = RET OR INSTR = RTI) ELSE '0';
 
 	addressToMemory <= ID_EX_dataSrc1 WHEN muxSelection = "000" 
 	ELSE ID_EX_dataSrc2 WHEN muxSelection = "001"
