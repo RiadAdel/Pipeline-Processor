@@ -5,14 +5,14 @@ ENTITY pcMux IS
 	PORT(
 		--addresses entered to the mux
 		Fetch1,pcAddressPlusOne,pcAddressPlusTwo,returnAddress,
-		returnInterruptAddress,branchAdd: IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		returnInterruptAddress,branchAdd: IN STD_LOGIC_VECTOR(19 DOWNTO 0);
 		
 		
 		--selectors
 		inturrupt,branch,S,reset: IN STD_LOGIC;
 		
 		--output to the pc
-		ToPcOut: OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+		ToPcOut: OUT STD_LOGIC_VECTOR(19 DOWNTO 0)
 	);
 END ENTITY pcMux;
 
@@ -23,7 +23,15 @@ BEGIN
 	selection(1) <= inturrupt or branch;
 	selection(2) <= inturrupt or (not branch and S);
 
---mux logic to be added ( i guess we need 1 more selection)
+--mux logic selection ( needs to be redone )
+
+ToPcOut <= Fetch1 		when selection = "000" else
+	pcAddressPlusOne 	when selection = "001" else
+	pcAddressPlusTwo 	when selection = "010" else
+	returnAddress           when selection = "011" else
+	returnInterruptAddress  when selection = "100" else
+	branchAdd 		when selection = "101";
+
 	
 
 	
