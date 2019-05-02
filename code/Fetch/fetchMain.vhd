@@ -11,8 +11,8 @@ ENTITY fetch IS
 		D2:IN STD_LOGIC_VECTOR(15 downto 0); 
 		
 		--selectors and other 1 bit inputs
-		inturrupt,branch,S,reset,pcEnable,pcReset,RamReset,clk: IN STD_LOGIC;
-		
+		inturrupt,branch,S,reset,pcEnable,pcReset,clk: IN STD_LOGIC;
+	
 		--output to fetch/decoder buffer
 		IR1Out,IR2Out: OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		

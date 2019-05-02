@@ -19,9 +19,9 @@ END ENTITY pcMux;
 ARCHITECTURE pcMuxArch OF pcMux IS
 	SIGNAL selection : STD_LOGIC_VECTOR(2 DOWNTO 0);
 BEGIN 
-	selection(0) <= reset;
-	selection(1) <= inturrupt or branch;
-	selection(2) <= inturrupt or (not branch and S);
+	selection(0) <= reset after 1 ns;
+	selection(1) <= inturrupt or branch after 1 ns;
+	selection(2) <= inturrupt or (not branch and S) after 1 ns;
 
 --mux logic selection ( needs to be redone )
 
