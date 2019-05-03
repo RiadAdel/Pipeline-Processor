@@ -8,7 +8,7 @@ entity main is
     reg1,reg2,reg3,reg4,reg5,reg6,reg7,reg8 , OutPort:out std_logic_vector(15 downto 0)
   ) ;
 end main;
-architecture maniArch of main is
+architecture mainArch of main is
      ------ input and output signals from entity fetch-------------
     signal dummy:std_logic_vector(19 downto 0);
     signal D2: std_logic_vector(15 downto 0);
@@ -54,16 +54,37 @@ architecture maniArch of main is
     signal MEM_WB_out_dst1Data,MEM_WB_out_dst2Data:std_logic_vector(15 downto 0);
     -------------------------------------------------------------------------------------------------
 
+    -- data RAM Signals
+    signal dataRam_W,dataRam_R : std_logic;
+    signal dataRam_addressToMemory : std_logic_vector(19 downto 0);
+    signal dataRam_dataToMemory : std_logic_vector(15 downto 0);
+    signal dataRam_inputFromMemory : std_logic_vector(15 downto 0);
+    -------------------------------------------------------------------------------------------------
+
+    -- WB outputs
+    signal WB_OUT_WB1, WB_OUT_WB2 : STD_LOGIC;
+    signal WB_OUT_dst1, WB_OUT_dst2 : STD_LOGIC_VECTOR(2 DOWNTO 0);
+    signal WB_OUT_dataDst1, WB_OUT_dataDst2 : STD_LOGIC_VECTOR(15 DOWNTO 0);
+    -------------------------------------------------------------------------------------------------
+
+    -- Stack Pointer signals
+    signal SPin, SPout : STD_LOGIC_VECTOR(19 DOWNTO 0);
+    -------------------------------------------------------------------------------------------------
+
+    -- Program Counter signals
+    signal PCin, PCout : STD_LOGIC_VECTOR(31 DOWNTO 0);
+    -------------------------------------------------------------------------------------------------
+
 begin
     -- Register File
     theRegisterFile:entity work.registerFile port map(clk,reset
     ,IF_ID_out_src1Exist,IF_ID_out_src2Exist
     ,IF_ID_out_dst1Exist,IF_ID_out_dst2Exist
-    ,MEM_WB_out_WB1,MEM_WB_out_WB2
-    ,MEM_WB_out_dst1,MEM_WB_out_dst2
+    ,WB_OUT_WB1,WB_OUT_WB2
+    ,WB_OUT_dst1,WB_OUT_dst2
     ,IF_ID_out_src1,IF_ID_out_src2
     ,IF_ID_out_dst1,IF_ID_out_dst2
-    ,MEM_WB_out_dst1Data,MEM_WB_out_dst2Data
+    ,WB_OUT_dataDst1,WB_OUT_dataDst2
     ,ID_EX_in_src1Data,ID_EX_in_src2Data
     ,ID_EX_in_dst1Data,ID_EX_in_dst1Data);
     -------------------------------------------------------------------------------------------------
@@ -82,14 +103,14 @@ begin
       D(0) => IF_ID_in_src1Exist, D(1) => IF_ID_in_src2Exist, D(2) => IF_ID_in_dst1Exist, D(3) => IF_ID_in_dst2Exist       -- 4 bit
       , D(8 downto 4) => IF_ID_in_Opcode1, D(13 downto 9) => IF_ID_in_Opcode2                                                -- 10 bit
       , D(16 downto 14) => IF_ID_in_src1, D(19 downto 17) => IF_ID_in_dst1, D(22 downto 20) => IF_ID_in_src2, D(25 downto 23) => IF_ID_in_dst2  
-      , D(45 downtot 26) => IF_ID_in_PcPlus1                       -- 12 bit
+      , D(45 downto 26) => IF_ID_in_PcPlus1                       -- 12 bit
       ,clk => clk                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
       ,Q(0) => IF_ID_out_src1Exist, Q(1) => IF_ID_out_src2Exist, Q(2) => IF_ID_out_dst1Exist, Q(3) => IF_ID_out_dst2Exist 
       ,Q(8 downto 4) => IF_ID_out_Opcode1, Q(13 downto 9) => IF_ID_out_Opcode2 
       ,Q(16 downto 14) => IF_ID_out_src1, Q(19 downto 17) => IF_ID_out_dst1, Q(22 downto 20) => IF_ID_out_src2, Q(25 downto 23) => IF_ID_out_dst2
-      ,Q(45 downtot 26) => IF_ID_out_PcPlus1
+      ,Q(45 downto 26) => IF_ID_out_PcPlus1
       );
 	    -------------------------------------------------------------------------------------------------
     -- Decode Stage
@@ -128,12 +149,73 @@ begin
     -------------------------------------------------------------------------------------------------
 
 
+    -- EX/MEM register
+    --EX_MEM_Register: entity work.nBitRegister generic map(96) port map();
+
+    -- RAM data only
+    dataRam: entity work.Ram  generic map(1) port map(
+      clk,
+      dataRam_W, dataRam_R,
+      dataRam_addressToMemory,
+      dataRam_dataToMemory,
+      dataRam_inputFromMemory);
+    -------------------------------------------------------------------------------------------------
+
+    -- Stack Pointer (SP) register
+    stackPointer: entity work.nBitRegister generic map(20) port map(SPin,clk,reset,'1',SPout); --lsa msh gahez
+    -------------------------------------------------------------------------------------------------
+
+    -- Program Counter (PC) register
+    programCounter: entity work.nBitRegister generic map(32) port map(PCin,clk,reset,'1',PCout); --lsa msh gahez
+    -------------------------------------------------------------------------------------------------
+
+    -- Memory Stage
+    MemoryStage:entity work.Memory port map (
+      ID_EX_out_src1Data,ID_EX_out_src2Data,
+      ID_EX_out_dst1Data,ID_EX_out_dst2Data,
+      SPout, 
+      ----------TODO-----------------
+      INSTR,
+      R1, R2,
+      W1, W2,
+      -------------------------------
+      dataRam_R, dataRam_W,
+      dataRam_addressToMemory,
+      dataRam_dataToMemory,
+      dataRam_inputFromMemory,
+      MEM_WB_in_dst1Data, MEM_WB_in_dst2Data
+    );
+    -------------------------------------------------------------------------------------------------
+
+    
+    
+    -- MEM/WB register
+    MEM_WB_Register: entity work.nBitRegister generic map(10) port map(
+      D(0) => MEM_WB_in_WB1, D(1) => MEM_WB_in_WB2, D(2) => MEM_WB_in_R1,
+      D(3) => MEM_WB_in_W1,  D(4) => MEM_WB_in_R2,  D(5) => MEM_WB_in_W2,
+      D(6) => MEM_WB_in_dst1,D(7) => MEM_WB_in_dst2,D(8) => MEM_WB_in_dst1Data,
+      D(9) => MEM_WB_in_dst2Data,
+      clk,                                                        
+      reset,                                                      
+      en => '1',
+      Q(0) => MEM_WB_out_WB1, Q(1) => MEM_WB_out_WB2, Q(2) => MEM_WB_out_R1,
+      Q(3) => MEM_WB_out_W1,  Q(4) => MEM_WB_out_R2,  Q(5) => MEM_WB_out_W2
+      Q(6) => MEM_WB_out_dst1,Q(7) => MEM_WB_out_dst2,Q(8) => MEM_WB_out_dst1Data,
+      Q(9) => MEM_WB_out_dst2Data
+    );
+    -------------------------------------------------------------------------------------------------
+
+    -- WriteBack Stage
+    WriteBackStage:entity work.WriteBack port map (
+      MEM_WB_out_WB1, MEM_WB_out_WB2,
+      MEM_WB_out_dst1, MEM_WB_out_dst2,
+      MEM_WB_out_dst1Data, MEM_WB_out_dst2Data,
+      WB_OUT_WB1, WB_OUT_WB2,
+      WB_OUT_dst1, WB_OUT_dst2,
+      WB_OUT_dataDst1, WB_OUT_dataDst2
+    );
+    -------------------------------------------------------------------------------------------------
 
 
 
-
-
-
-
-
-end maniArch ; -- maniArch
+end mainArch ; -- mainArch
