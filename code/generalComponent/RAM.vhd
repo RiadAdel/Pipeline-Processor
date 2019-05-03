@@ -9,14 +9,14 @@ ENTITY Ram IS
 	PORT(
 		CLK : IN std_logic;
 		W,R : IN std_logic;
-		address : IN  std_logic_vector(10 DOWNTO 0);
+		address : IN  std_logic_vector(19 DOWNTO 0);          ---18 bit address cause 32 we dont need it and it's to large
 		dataIn  : IN  std_logic_vector(15 DOWNTO 0);
 		dataOut : OUT std_logic_vector(16*n-1 DOWNTO 0));
 END ENTITY Ram;
 
 ARCHITECTURE syncrama OF Ram IS
 
-	TYPE ram_type IS ARRAY(0 TO 2047) OF std_logic_vector(15 DOWNTO 0);
+	TYPE ram_type IS ARRAY(0 TO 1048575) OF std_logic_vector(15 DOWNTO 0);
 	SIGNAL ram : ram_type ;
 	
 	BEGIN
