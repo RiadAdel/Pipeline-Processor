@@ -10,7 +10,7 @@ entity excution is
     ID_EX_src1,ID_EX_dst1,ID_EX_src2,ID_EX_dst2:in std_logic_vector(2 downto 0); -- reg code
     ID_EX_src1Data,ID_EX_dst1Data,ID_EX_src2Data,ID_EX_dst2Data:in std_logic_vector(15 downto 0); -- reg data
     ID_EX_aluSelector1,ID_EX_aluSelector2:in std_logic_vector(3 downto 0); -- alu selectors
-    ID_EX_opCode1,ID_EX_opCode2:in std_logic; -- opcode
+    ID_EX_opCode1,ID_EX_opCode2:in std_logic_vector(4 downto 0); -- opcode
     ID_EX_R1,ID_EX_R2,ID_EX_W1,ID_EX_W2:in std_logic; -- read and write
     ID_EX_WB1,ID_EX_WB2:in std_logic;
     -- for ALU forwarding
