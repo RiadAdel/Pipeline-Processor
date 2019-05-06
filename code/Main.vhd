@@ -52,6 +52,7 @@ architecture mainArch of main is
     signal EX_MEM_in_dst1Data,EX_MEM_in_dst2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_in_WB1,EX_MEM_in_WB2,EX_MEM_in_R1,EX_MEM_in_W1,EX_MEM_in_R2,EX_MEM_in_W2:std_logic;
     signal EX_MEM_in_ex1,EX_MEM_in_ex2:std_logic;
+    
     -- EX/MEM outputs
     signal EX_MEM_out_src1Exist,EX_MEM_out_src2Exist,EX_MEM_out_dst1Exist,EX_MEM_out_dst2Exist:std_logic;
     signal EX_MEM_out_src1,EX_MEM_out_src2,EX_MEM_out_dst1,EX_MEM_out_dst2:std_logic_vector(2 downto 0);
@@ -71,13 +72,6 @@ architecture mainArch of main is
     signal MEM_WB_out_dst1,MEM_WB_out_dst2:std_logic_vector(2 downto 0);
     signal MEM_WB_out_dst1Data,MEM_WB_out_dst2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_out_opCode1,EX_MEM_out_opCode2:std_logic_vector(4 downto 0);
-    -------------------------------------------------------------------------------------------------
-
-    -- data RAM Signals
-    signal dataRam_W,dataRam_R : std_logic;
-    signal dataRam_addressToMemory : std_logic_vector(19 downto 0);
-    signal dataRam_dataToMemory : std_logic_vector(15 downto 0);
-    signal dataRam_inputFromMemory : std_logic_vector(15 downto 0);
     -------------------------------------------------------------------------------------------------
 
     -- WB outputs
@@ -210,7 +204,6 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,MEM_WB_out_dst1,MEM_WB_out_dst2
       ,MEM_WB_out_dst1Data,MEM_WB_out_dst2Data
       ,MEM_WB_out_R1,MEM_WB_out_R2
-
       ,branshAddress
       ,EX_MEM_in_dst1Data,EX_MEM_in_dst2Data
       ,flagRegister
@@ -259,6 +252,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
 --      dataRam_dataToMemory,
 --      dataRam_inputFromMemory);
 --    -------------------------------------------------------------------------------------------------
+
 --
 --    -- Stack Pointer (SP) register
 --    stackPointer: entity work.nBitRegister generic map(20) port map(SPin,clk,reset,'1',SPout); --lsa msh gahez
@@ -269,23 +263,21 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
 --    -------------------------------------------------------------------------------------------------
 --
 --    -- Memory Stage
---    MemoryStage:entity work.Memory port map (
---      ID_EX_out_src1Data,ID_EX_out_src2Data,
---      ID_EX_out_dst1Data,ID_EX_out_dst2Data,
---      SPout, 
---      ----------TODO-----------------
---      INSTR,
---      R1, R2,
---      W1, W2,
---      -------------------------------
---      dataRam_R, dataRam_W,
---      dataRam_addressToMemory,
---      dataRam_dataToMemory,
---      dataRam_inputFromMemory,
---      MEM_WB_in_dst1Data, MEM_WB_in_dst2Data
+--    MemoryStage:entity work.Memory port map (clk,
+--    EX_MEM_out_src1Data,EX_MEM_out_src2Data,
+--    EX_MEM_out_dst1Data,EX_MEM_out_dst2Data,
+--    SPout, 
+--    ----------TODO-----------------
+--    INSTR,
+--    EX_MEM_out_R1, EX_MEM_out_R2,
+--    EX_MEM_out_WB1, EX_MEM_out_WB2,
+--    -------------------------------
+--    MEM_WB_in_dst1Data, MEM_WB_in_dst2Data
 --    );
+
   
 --    -------------------------------------------------------------------------------------------------
+
 --
 --    
 --    
