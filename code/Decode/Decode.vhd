@@ -62,7 +62,7 @@ else ALUOR when IF_ID_OpCode1 = OOR
 else ALUSHL when IF_ID_OpCode1 = SHL
 else ALUSHR when IF_ID_OpCode1 = SHR  
 else ALUFEQUALB when IF_ID_OpCode1 = JZ or IF_ID_OpCode1 = JN or IF_ID_OpCode1 = JC or IF_ID_OpCode1 = CALL or IF_ID_OpCode1 = JMP
-else ALUFEQUALZZ ;
+else ALUFEQUAL0;
 
 ID_EX_ALUSelection1<= ID_EX_ALUSel1 when Bubble = '0' else ALUFEQUAL0;
 
@@ -79,7 +79,7 @@ else ALUOR when IF_ID_OpCode2 = OOR
 else ALUSHL when IF_ID_OpCode2 = SHL
 else ALUSHR when IF_ID_OpCode2 = SHR  
 else ALUFEQUALB when IF_ID_OpCode2 = JZ or IF_ID_OpCode2 = JN or IF_ID_OpCode2 = JC or IF_ID_OpCode2 = CALL or IF_ID_OpCode2 = JMP
-else ALUFEQUALZZ ;
+else ALUFEQUAL0 ;
 
 
 ID_EX_ALUSelection2<= ID_EX_ALUSel2 when Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  else ALUFEQUAL0;

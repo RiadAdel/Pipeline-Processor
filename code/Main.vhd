@@ -20,11 +20,13 @@ architecture mainArch of main is
     signal IF_ID_in_src1,IF_ID_in_dst1,IF_ID_in_src2,IF_ID_in_dst2:std_logic_vector(2 downto 0);
     signal fetchController:std_logic; -- S
     signal IF_ID_in_PcPlus1: STD_LOGIC_VECTOR(19 DOWNTO 0);
+    signal IF_ID_in_dummy3bits1,IF_ID_in_dummy3bits2: std_logic_vector(2 downto 0);
     -- IF/ID outputs
     signal IF_ID_out_src1Exist,IF_ID_out_src2Exist,IF_ID_out_dst1Exist,IF_ID_out_dst2Exist:std_logic;
     signal IF_ID_out_Opcode1,IF_ID_out_Opcode2:std_logic_vector(4 downto 0);
     signal IF_ID_out_src1,IF_ID_out_dst1,IF_ID_out_src2,IF_ID_out_dst2:std_logic_vector(2 downto 0);
     signal IF_ID_out_PcPlus1: STD_LOGIC_VECTOR(19 DOWNTO 0);
+    signal IF_ID_out_dummy3bits1,IF_ID_out_dummy3bits2: std_logic_vector(2 downto 0);
     -------------------------------------------------------------------------------------------------
     
       -- ID/EX inputs
@@ -44,12 +46,16 @@ architecture mainArch of main is
     -------------------------------------------------------------------------------------------------
 
     --EX/MEM inputs
-    signal EX_MEM_in_dst1,EX_MEM_in_dst2:std_logic_vector(2 downto 0);
+    signal EX_MEM_in_src1Exist,EX_MEM_in_src2Exist,EX_MEM_in_dst1Exist,EX_MEM_in_dst2Exist:std_logic;
+    signal EX_MEM_in_src1,EX_MEM_in_src2,EX_MEM_in_dst1,EX_MEM_in_dst2:std_logic_vector(2 downto 0);
+    signal EX_MEM_in_src1Data,EX_MEM_in_src2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_in_dst1Data,EX_MEM_in_dst2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_in_WB1,EX_MEM_in_WB2,EX_MEM_in_R1,EX_MEM_in_W1,EX_MEM_in_R2,EX_MEM_in_W2:std_logic;
     signal EX_MEM_in_ex1,EX_MEM_in_ex2:std_logic;
     -- EX/MEM outputs
-    signal EX_MEM_out_dst1,EX_MEM_out_dst2:std_logic_vector(2 downto 0);
+    signal EX_MEM_out_src1Exist,EX_MEM_out_src2Exist,EX_MEM_out_dst1Exist,EX_MEM_out_dst2Exist:std_logic;
+    signal EX_MEM_out_src1,EX_MEM_out_src2,EX_MEM_out_dst1,EX_MEM_out_dst2:std_logic_vector(2 downto 0);
+    signal EX_MEM_out_src1Data,EX_MEM_out_src2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_out_dst1Data,EX_MEM_out_dst2Data:std_logic_vector(15 downto 0);
     signal EX_MEM_out_WB1,EX_MEM_out_WB2,EX_MEM_out_R1,EX_MEM_out_W1,EX_MEM_out_R2,EX_MEM_out_W2:std_logic;
     signal EX_MEM_out_ex1,EX_MEM_out_ex2:std_logic;
@@ -59,10 +65,12 @@ architecture mainArch of main is
     signal MEM_WB_in_WB1,MEM_WB_in_WB2,MEM_WB_in_R1,MEM_WB_in_W1,MEM_WB_in_R2,MEM_WB_in_W2:std_logic;
     signal MEM_WB_in_dst1,MEM_WB_in_dst2:std_logic_vector(2 downto 0);
     signal MEM_WB_in_dst1Data,MEM_WB_in_dst2Data:std_logic_vector(15 downto 0);
+    signal EX_MEM_in_opCode1,EX_MEM_in_opCode2:std_logic_vector(4 downto 0);
     -- MEM/WB outputs
     signal MEM_WB_out_WB1,MEM_WB_out_WB2,MEM_WB_out_R1,MEM_WB_out_W1,MEM_WB_out_R2,MEM_WB_out_W2:std_logic;
     signal MEM_WB_out_dst1,MEM_WB_out_dst2:std_logic_vector(2 downto 0);
     signal MEM_WB_out_dst1Data,MEM_WB_out_dst2Data:std_logic_vector(15 downto 0);
+    signal EX_MEM_out_opCode1,EX_MEM_out_opCode2:std_logic_vector(4 downto 0);
     -------------------------------------------------------------------------------------------------
 
     -- data RAM Signals
@@ -98,23 +106,39 @@ begin
     ,WB_OUT_dataDst1,WB_OUT_dataDst2
     ,ID_EX_in_src1Data,ID_EX_in_src2Data
     ,ID_EX_in_dst1Data,ID_EX_in_dst2Data);
---    -------------------------------------------------------------------------------------------------
---	dummy<=  (others=>'0');
---    -- port map (returnAddress,branchAdd , D2 ,inturrupt,branch1 , branch2 ,RTIandRET ,S , ID_EX_S,reset,Bubble,clk,IR1Out,IR2Out,PcPlus1 )  
---    -- Fetch Stage
---	D2<=IF_ID_out_Opcode2 &IF_ID_out_src2Exist&IF_ID_out_dst2Exist&IF_ID_out_src2&IF_ID_out_dst2;
---	FetchStage:entity work.fetch   port map (dummy,dummy, D2 , int , '0' , '0' , '0' , fetchController , '0' , reset , '0' , clk , 
---	  IF_ID_in_Opcode1&IF_ID_in_src1Exist&IF_ID_in_dst1Exist&IF_ID_in_src1&IF_ID_in_dst1,
---	  IF_ID_in_Opcode2&IF_ID_in_src2Exist&IF_ID_in_dst2Exist&IF_ID_in_src2&IF_ID_in_dst2  , IF_ID_in_PcPlus1 );
---
+  ---------------------------------------------------------------------------------------------------
+  --Fetch Stage
+	dummy<=  (others=>'0');
+	D2<=IF_ID_out_Opcode2 &IF_ID_out_src2Exist&IF_ID_out_dst2Exist&IF_ID_in_dummy3bits2&IF_ID_out_src2&IF_ID_out_dst2;
+  
+FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
+  ,D2 => D2
+  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> '0' 
+  ,reset => reset , Bubble => '0',clk => clk 
+
+  ,IR1Out(4 downto 0) => IF_ID_in_Opcode1 
+  ,IR1Out(5) => IF_ID_in_src1Exist , IR1Out(6) => IF_ID_in_dst1Exist
+  ,IR1Out(9 downto 7) => IF_ID_in_dummy3bits1 
+  ,IR1Out(12 downto 10) => IF_ID_in_src1 
+  ,IR1Out(15 downto 13) => IF_ID_in_dst1
+  ,IR2Out(4 downto 0) => IF_ID_in_Opcode2
+  ,IR2Out(5) => IF_ID_in_src2Exist , IR2Out(6) => IF_ID_in_dst2Exist
+  ,IR2Out(9 downto 7) => IF_ID_in_dummy3bits2
+  ,IR2Out(12 downto 10) => IF_ID_in_src2
+  ,IR2Out(15 downto 13) => IF_ID_in_dst2
+
+  ,PcPlus1 => IF_ID_in_PcPlus1 );
+
 --    -------------------------------------------------------------------------------------------------
 
     -- IF/ID register
-    IF_ID_Register: entity work.nBitRegister generic map(46) port map(
+    IF_ID_Register: entity work.nBitRegister generic map(52) port map(
       D(0) => IF_ID_in_src1Exist, D(1) => IF_ID_in_src2Exist, D(2) => IF_ID_in_dst1Exist, D(3) => IF_ID_in_dst2Exist       -- 4 bit
       , D(8 downto 4) => IF_ID_in_Opcode1, D(13 downto 9) => IF_ID_in_Opcode2                                                -- 10 bit
       , D(16 downto 14) => IF_ID_in_src1, D(19 downto 17) => IF_ID_in_dst1, D(22 downto 20) => IF_ID_in_src2, D(25 downto 23) => IF_ID_in_dst2  
       , D(45 downto 26) => IF_ID_in_PcPlus1                       -- 12 bit
+      , D(48 downto 46) => IF_ID_in_dummy3bits1
+      , D(51 downto 49) => IF_ID_in_dummy3bits2
       ,clk => clk                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
@@ -122,22 +146,27 @@ begin
       ,Q(8 downto 4) => IF_ID_out_Opcode1, Q(13 downto 9) => IF_ID_out_Opcode2 
       ,Q(16 downto 14) => IF_ID_out_src1, Q(19 downto 17) => IF_ID_out_dst1, Q(22 downto 20) => IF_ID_out_src2, Q(25 downto 23) => IF_ID_out_dst2
       ,Q(45 downto 26) => IF_ID_out_PcPlus1
+      ,Q(48 downto 46) => IF_ID_out_dummy3bits1
+      ,Q(51 downto 49) => IF_ID_out_dummy3bits2
       );
+
 	    -------------------------------------------------------------------------------------------------
-    -- Decode Stage
-    DecodeEntity: entity work.StageDecode port map(IF_ID_out_src1Exist,IF_ID_out_src2Exist,IF_ID_out_dst1Exist,IF_ID_out_dst2Exist
-    ,IF_ID_out_Opcode1,IF_ID_out_Opcode2
-    ,IF_ID_out_src1,IF_ID_out_dst1,IF_ID_out_src2,IF_ID_out_dst2
-    ,'0' -- Bubble to do
-    ,fetchController,ID_EX_in_WB1,ID_EX_in_WB2,ID_EX_in_R1,ID_EX_in_R2,ID_EX_in_W1,ID_EX_in_W2
-    ,ID_EX_in_src1Exist,ID_EX_in_src2Exist,ID_EX_in_dst1Exist,ID_EX_in_dst2Exist
-    ,ID_EX_in_Opcode1,ID_EX_in_Opcode2
-    ,ID_EX_in_ALUSelection1,ID_EX_in_ALUSelection2);
-    -- passing data
-    ID_EX_in_src1 <= IF_ID_out_src1; 
-    ID_EX_in_dst1 <= IF_ID_out_dst1;
-    ID_EX_in_src2 <= IF_ID_out_src2;
-    ID_EX_in_dst2 <= IF_ID_out_dst2;
+    
+      -- Decode Stage
+      DecodeEntity: entity work.StageDecode port map(IF_ID_out_src1Exist,IF_ID_out_src2Exist,IF_ID_out_dst1Exist,IF_ID_out_dst2Exist
+      ,IF_ID_out_Opcode1,IF_ID_out_Opcode2
+      ,IF_ID_out_src1,IF_ID_out_dst1,IF_ID_out_src2,IF_ID_out_dst2
+      ,'0' -- Bubble to do
+      ,fetchController,ID_EX_in_WB1,ID_EX_in_WB2,ID_EX_in_R1,ID_EX_in_R2,ID_EX_in_W1,ID_EX_in_W2
+      ,ID_EX_in_src1Exist,ID_EX_in_src2Exist,ID_EX_in_dst1Exist,ID_EX_in_dst2Exist
+      ,ID_EX_in_Opcode1,ID_EX_in_Opcode2
+      ,ID_EX_in_ALUSelection1,ID_EX_in_ALUSelection2);
+
+      -- passing data
+      ID_EX_in_src1 <= IF_ID_out_src1; 
+      ID_EX_in_dst1 <= IF_ID_out_dst1;
+      ID_EX_in_src2 <= IF_ID_out_src2;
+      ID_EX_in_dst2 <= IF_ID_out_dst2;
     -------------------------------------------------------------------------------------------------
 
     -- ID/EX register
@@ -188,14 +217,40 @@ begin
       ,EX_MEM_in_ex1,EX_MEM_in_ex2
     );
     -- passing data
+    EX_MEM_in_opCode1 <= ID_EX_out_Opcode1;
+    EX_MEM_in_opCode2 <= ID_EX_out_Opcode2;
+    EX_MEM_in_src1Data <= ID_EX_out_src1Data;
+    EX_MEM_in_src1Data <=ID_EX_out_src2Data;
+    EX_MEM_in_src1 <= ID_EX_out_src1;
+    EX_MEM_in_src2 <= ID_EX_out_src2;
     EX_MEM_in_dst1 <= ID_EX_out_dst1;
     EX_MEM_in_dst2 <= ID_EX_out_dst2;
     -------------------------------------------------------------------------------------------------
 
 
---    -- EX/MEM register
---    --EX_MEM_Register: entity work.nBitRegister generic map(96) port map();
---
+    -- EX/MEM register
+    EX_MEM_Register: entity work.nBitRegister generic map(98) port map(
+      D(0) => EX_MEM_in_src1Exist, D(1) => EX_MEM_in_src2Exist, D(2) => EX_MEM_in_dst1Exist, D(3) => EX_MEM_in_dst2Exist       -- 4 bit
+      ,D(8 downto 4) => EX_MEM_in_Opcode1, D(13 downto 9) => EX_MEM_in_Opcode2                                                -- 10 bit
+      ,D(16 downto 14) => EX_MEM_in_src1, D(19 downto 17) => EX_MEM_in_dst1, D(22 downto 20) => EX_MEM_in_src2, D(25 downto 23) => EX_MEM_in_dst2                          -- 12 bit
+      ,D(26) => EX_MEM_in_WB1, D(27) => EX_MEM_in_WB2, D(28) => EX_MEM_in_R1, D(29) => EX_MEM_in_R2,D(30) => EX_MEM_in_W1, D(31) => EX_MEM_in_W2
+      ,D(47 downto 32) => EX_MEM_in_src1Data,D(63 downto 48) => EX_MEM_in_src2Data
+      ,D(79 downto 64) => EX_MEM_in_dst1Data,D(95 downto 80) => EX_MEM_in_dst1Data
+      ,D(96) => EX_MEM_in_ex1 ,D(97) => EX_MEM_in_ex2
+     
+     ,clk => clk                                                                              
+     ,rst => reset                                                                            
+     ,en => '0'    
+
+      ,Q(0) => EX_MEM_out_src1Exist, Q(1) => EX_MEM_out_src2Exist, Q(2) => EX_MEM_out_dst1Exist, Q(3) => EX_MEM_out_dst2Exist       -- 4 bit
+      ,Q(8 downto 4) => EX_MEM_out_Opcode1, Q(13 downto 9) => EX_MEM_out_Opcode2                                                -- 10 bit
+      ,Q(16 downto 14) => EX_MEM_out_src1, Q(19 downto 17) => EX_MEM_out_dst1, Q(22 downto 20) => EX_MEM_out_src2, Q(25 downto 23) => EX_MEM_out_dst2                          -- 12 bit
+      ,Q(26) => EX_MEM_out_WB1, Q(27) => EX_MEM_out_WB2, Q(28) => EX_MEM_out_R1, Q(29) => EX_MEM_out_R2,Q(30) => EX_MEM_out_W1, Q(31) => EX_MEM_out_W2
+      ,Q(47 downto 32) => EX_MEM_out_src1Data,Q(63 downto 48) => EX_MEM_out_src2Data
+      ,Q(79 downto 64) => EX_MEM_out_dst1Data,Q(95 downto 80) => EX_MEM_out_dst1Data
+      ,Q(96) => EX_MEM_out_ex1 ,Q(97) => EX_MEM_out_ex2
+    );
+
 --    -- RAM data only
 --    dataRam: entity work.Ram  generic map(1) port map(
 --      clk,
@@ -229,24 +284,27 @@ begin
 --      dataRam_inputFromMemory,
 --      MEM_WB_in_dst1Data, MEM_WB_in_dst2Data
 --    );
+  
 --    -------------------------------------------------------------------------------------------------
 --
 --    
 --    
---    -- MEM/WB register
---    MEM_WB_Register: entity work.nBitRegister generic map(10) port map(
---      D(0) => MEM_WB_in_WB1, D(1) => MEM_WB_in_WB2, D(2) => MEM_WB_in_R1,
---      D(3) => MEM_WB_in_W1,  D(4) => MEM_WB_in_R2,  D(5) => MEM_WB_in_W2,
---      D(6) => MEM_WB_in_dst1,D(7) => MEM_WB_in_dst2,D(8) => MEM_WB_in_dst1Data,
---      D(9) => MEM_WB_in_dst2Data,
---      clk,                                                        
---      reset,                                                      
---      en => '1',
---      Q(0) => MEM_WB_out_WB1, Q(1) => MEM_WB_out_WB2, Q(2) => MEM_WB_out_R1,
---      Q(3) => MEM_WB_out_W1,  Q(4) => MEM_WB_out_R2,  Q(5) => MEM_WB_out_W2
---      Q(6) => MEM_WB_out_dst1,Q(7) => MEM_WB_out_dst2,Q(8) => MEM_WB_out_dst1Data,
---      Q(9) => MEM_WB_out_dst2Data
---    );
+    -- MEM/WB register
+    MEM_WB_Register: entity work.nBitRegister generic map(44) port map(
+      D(0) => MEM_WB_in_WB1, D(1) => MEM_WB_in_WB2, D(2) => MEM_WB_in_R1
+      ,D(3) => MEM_WB_in_W1,  D(4) => MEM_WB_in_R2,  D(5) => MEM_WB_in_W2
+      ,D(8 downto 6) => MEM_WB_in_dst1,D(11 downto 9) => MEM_WB_in_dst2
+      ,D(27 downto 12) => MEM_WB_in_dst1Data,D(43 downto 28) => MEM_WB_in_dst2Data
+
+      ,clk => clk                                                                              
+      ,rst => reset                                                                            
+      ,en => '0'   
+
+      ,Q(0) => MEM_WB_out_WB1, Q(1) => MEM_WB_out_WB2, Q(2) => MEM_WB_out_R1
+      ,Q(3) => MEM_WB_out_W1,  Q(4) => MEM_WB_out_R2,  Q(5) => MEM_WB_out_W2
+      ,Q(8 downto 6) => MEM_WB_out_dst1,Q(11 downto 9) => MEM_WB_out_dst2
+      ,Q(27 downto 12) => MEM_WB_out_dst1Data,Q(43 downto 28) => MEM_WB_out_dst2Data
+    );
 --    -------------------------------------------------------------------------------------------------
 --
 --    -- WriteBack Stage
