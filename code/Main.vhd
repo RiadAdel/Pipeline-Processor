@@ -42,6 +42,8 @@ architecture mainArch of main is
     -------------------------------------------------------------------------------------------------
 
     -- EX/MEM outputs
+    signal EX_MEM_out_src1Data,EX_MEM_out_src2Data:std_logic_vector(15 downto 0);
+    signal EX_MEM_out_dst1Data,EX_MEM_out_dst2Data:std_logic_vector(15 downto 0);
     -------------------------------------------------------------------------------------------------
 
     -- MEM/WB inputs
@@ -52,13 +54,6 @@ architecture mainArch of main is
     signal MEM_WB_out_WB1,MEM_WB_out_WB2,MEM_WB_out_R1,MEM_WB_out_W1,MEM_WB_out_R2,MEM_WB_out_W2:std_logic;
     signal MEM_WB_out_dst1,MEM_WB_out_dst2:std_logic_vector(2 downto 0);
     signal MEM_WB_out_dst1Data,MEM_WB_out_dst2Data:std_logic_vector(15 downto 0);
-    -------------------------------------------------------------------------------------------------
-
-    -- data RAM Signals
-    signal dataRam_W,dataRam_R : std_logic;
-    signal dataRam_addressToMemory : std_logic_vector(19 downto 0);
-    signal dataRam_dataToMemory : std_logic_vector(15 downto 0);
-    signal dataRam_inputFromMemory : std_logic_vector(15 downto 0);
     -------------------------------------------------------------------------------------------------
 
     -- WB outputs
@@ -152,15 +147,6 @@ begin
     -- EX/MEM register
     --EX_MEM_Register: entity work.nBitRegister generic map(96) port map();
 
-    -- RAM data only
-    dataRam: entity work.Ram  generic map(1) port map(
-      clk,
-      dataRam_W, dataRam_R,
-      dataRam_addressToMemory,
-      dataRam_dataToMemory,
-      dataRam_inputFromMemory);
-    -------------------------------------------------------------------------------------------------
-
     -- Stack Pointer (SP) register
     stackPointer: entity work.nBitRegister generic map(20) port map(SPin,clk,reset,'1',SPout); --lsa msh gahez
     -------------------------------------------------------------------------------------------------
@@ -170,9 +156,9 @@ begin
     -------------------------------------------------------------------------------------------------
 
     -- Memory Stage
-    MemoryStage:entity work.Memory port map (
-      ID_EX_out_src1Data,ID_EX_out_src2Data,
-      ID_EX_out_dst1Data,ID_EX_out_dst2Data,
+    MemoryStage:entity work.Memory port map (clk,
+      EX_MEM_out_src1Data,EX_MEM_out_src2Data,
+      EX_MEM_out_dst1Data,EX_MEM_out_dst2Data,
       SPout, 
       ----------TODO-----------------
       INSTR,
