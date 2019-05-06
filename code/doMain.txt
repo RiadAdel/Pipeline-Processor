@@ -1,0 +1,222 @@
+vsim -gui work.main
+# vsim -gui work.main 
+# Start time: 04:08:36 on May 04,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.constants
+# Loading ieee.numeric_std(body)
+# Loading work.main(mainarch)
+# Loading work.registerfile(archregisterfile)
+# Loading work.decoder(dec)
+# Loading work.nbitregister(data_flow)
+# Loading work.custommux(archcustommux)
+# Loading work.stagedecode(de)
+# Loading work.excution(excutionarch)
+# Loading work.forwardunit(forwardunitarch)
+# Loading work.forwarddesidor(forwarddesidorarch)
+# Loading work.mux_2x1(mux_2x1arch)
+# Loading work.mux_4x1(mux_4x1arch)
+# Loading work.alu(aluarch)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.shifter(shifterarch)
+# ** Warning: (vsim-8683) Uninitialized out port /main/ExcutionStage/brashAddress(31 downto 0) has no driver.
+# This port will contribute value (UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU) to the signal network.
+# vsim -gui work.main 
+# Start time: 03:32:21 on May 04,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.constants
+# Loading ieee.numeric_std(body)
+# Loading work.main(mainarch)
+# Loading work.registerfile(archregisterfile)
+# Loading work.decoder(dec)
+# Loading work.nbitregister(data_flow)
+# Loading work.custommux(archcustommux)
+# Loading work.stagedecode(de)
+# Loading work.excution(excutionarch)
+# Loading work.forwardunit(forwardunitarch)
+# Loading work.forwarddesidor(forwarddesidorarch)
+# Loading work.mux_2x1(mux_2x1arch)
+# Loading work.mux_4x1(mux_4x1arch)
+# Loading work.alu(aluarch)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.shifter(shifterarch)
+# ** Warning: (vsim-8683) Uninitialized out port /main/ExcutionStage/brashAddress(31 downto 0) has no driver.
+# This port will contribute value (UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU) to the signal network.
+add wave -position insertpoint  \
+sim:/main/clk \
+sim:/main/reset
+add wave -position insertpoint  \
+sim:/main/IF_ID_in_src1Exist \
+sim:/main/IF_ID_in_src2Exist \
+sim:/main/IF_ID_in_dst1Exist \
+sim:/main/IF_ID_in_dst2Exist \
+sim:/main/IF_ID_in_Opcode1 \
+sim:/main/IF_ID_in_Opcode2 \
+sim:/main/IF_ID_in_src1 \
+sim:/main/IF_ID_in_dst1 \
+sim:/main/IF_ID_in_src2 \
+sim:/main/IF_ID_in_dst2 \
+sim:/main/fetchController
+force -freeze sim:/main/reset 1 0
+force -freeze sim:/main/clk 1 0, 0 {50 ps} -r 100
+force -freeze sim:/main/IF_ID_in_src1Exist 0 0
+force -freeze sim:/main/IF_ID_in_src2Exist 0 0
+force -freeze sim:/main/IF_ID_in_dst1Exist 1 0
+force -freeze sim:/main/IF_ID_in_dst2Exist 1 0
+force -freeze sim:/main/IF_ID_in_Opcode1 00100 0
+force -freeze sim:/main/IF_ID_in_Opcode2 00101 0
+force -freeze sim:/main/IF_ID_in_src1 000 0
+force -freeze sim:/main/IF_ID_in_dst1 001 0
+force -freeze sim:/main/IF_ID_in_src2 011 0
+force -freeze sim:/main/IF_ID_in_dst2 100 0
+force -freeze sim:/main/fetchController 0 0
+noforce sim:/main/fetchController
+add wave -position insertpoint  \
+sim:/main/IF_ID_out_src1Exist \
+sim:/main/IF_ID_out_src2Exist \
+sim:/main/IF_ID_out_dst1Exist \
+sim:/main/IF_ID_out_dst2Exist \
+sim:/main/IF_ID_out_Opcode1 \
+sim:/main/IF_ID_out_Opcode2 \
+sim:/main/IF_ID_out_src1 \
+sim:/main/IF_ID_out_dst1 \
+sim:/main/IF_ID_out_src2 \
+sim:/main/IF_ID_out_dst2 \
+sim:/main/IF_ID_out_PcPlus1
+add wave -position insertpoint  \
+sim:/main/ID_EX_in_src1Exist \
+sim:/main/ID_EX_in_src2Exist \
+sim:/main/ID_EX_in_dst1Exist \
+sim:/main/ID_EX_in_dst2Exist \
+sim:/main/ID_EX_in_Opcode1 \
+sim:/main/ID_EX_in_Opcode2 \
+sim:/main/ID_EX_in_src1 \
+sim:/main/ID_EX_in_dst1 \
+sim:/main/ID_EX_in_src2 \
+sim:/main/ID_EX_in_dst2 \
+sim:/main/ID_EX_in_src1Data \
+sim:/main/ID_EX_in_dst1Data \
+sim:/main/ID_EX_in_src2Data \
+sim:/main/ID_EX_in_dst2Data \
+sim:/main/ID_EX_in_WB1 \
+sim:/main/ID_EX_in_WB2 \
+sim:/main/ID_EX_in_R1 \
+sim:/main/ID_EX_in_W1 \
+sim:/main/ID_EX_in_R2 \
+sim:/main/ID_EX_in_W2 \
+sim:/main/ID_EX_in_ALUSelection1 \
+sim:/main/ID_EX_in_ALUSelection2 \
+sim:/main/ID_EX_out_src1Exist \
+sim:/main/ID_EX_out_src2Exist \
+sim:/main/ID_EX_out_dst1Exist \
+sim:/main/ID_EX_out_dst2Exist \
+sim:/main/ID_EX_out_Opcode1 \
+sim:/main/ID_EX_out_Opcode2 \
+sim:/main/ID_EX_out_src1 \
+sim:/main/ID_EX_out_dst1 \
+sim:/main/ID_EX_out_src2 \
+sim:/main/ID_EX_out_dst2 \
+sim:/main/ID_EX_out_src1Data \
+sim:/main/ID_EX_out_dst1Data \
+sim:/main/ID_EX_out_src2Data \
+sim:/main/ID_EX_out_dst2Data \
+sim:/main/ID_EX_out_WB1 \
+sim:/main/ID_EX_out_WB2 \
+sim:/main/ID_EX_out_R1 \
+sim:/main/ID_EX_out_W1 \
+sim:/main/ID_EX_out_R2 \
+sim:/main/ID_EX_out_W2 \
+sim:/main/ID_EX_out_ALUSelection1 \
+sim:/main/ID_EX_out_ALUSelection2
+add wave -position insertpoint  \
+sim:/main/EX_MEM_in_dst1 \
+sim:/main/EX_MEM_in_dst2 \
+sim:/main/EX_MEM_in_dst1Data \
+sim:/main/EX_MEM_in_dst2Data
+force -freeze sim:/main/clk 0 0, 1 {50 ps} -r 100
+add wave -position insertpoint  \
+sim:/main/EX_MEM_in_dst1 \
+sim:/main/EX_MEM_in_dst2 \
+sim:/main/EX_MEM_in_dst1Data \
+sim:/main/EX_MEM_in_dst2Data \
+sim:/main/EX_MEM_in_WB1 \
+sim:/main/EX_MEM_in_WB2 \
+sim:/main/EX_MEM_in_R1 \
+sim:/main/EX_MEM_in_W1 \
+sim:/main/EX_MEM_in_R2 \
+sim:/main/EX_MEM_in_W2 \
+sim:/main/EX_MEM_in_ex1 \
+sim:/main/EX_MEM_in_ex2 \
+sim:/main/EX_MEM_out_dst1 \
+sim:/main/EX_MEM_out_dst2 \
+sim:/main/EX_MEM_out_dst1Data \
+sim:/main/EX_MEM_out_dst2Data \
+sim:/main/EX_MEM_out_WB1 \
+sim:/main/EX_MEM_out_WB2 \
+sim:/main/EX_MEM_out_R1 \
+sim:/main/EX_MEM_out_W1 \
+sim:/main/EX_MEM_out_R2 \
+sim:/main/EX_MEM_out_W2 \
+sim:/main/EX_MEM_out_ex1 \
+sim:/main/EX_MEM_out_ex2 \
+sim:/main/MEM_WB_in_WB1 \
+sim:/main/MEM_WB_in_WB2 \
+sim:/main/MEM_WB_in_R1 \
+sim:/main/MEM_WB_in_W1 \
+sim:/main/MEM_WB_in_R2 \
+sim:/main/MEM_WB_in_W2 \
+sim:/main/MEM_WB_in_dst1 \
+sim:/main/MEM_WB_in_dst2 \
+sim:/main/MEM_WB_in_dst1Data \
+sim:/main/MEM_WB_in_dst2Data \
+sim:/main/MEM_WB_out_WB1 \
+sim:/main/MEM_WB_out_WB2 \
+sim:/main/MEM_WB_out_R1 \
+sim:/main/MEM_WB_out_W1 \
+sim:/main/MEM_WB_out_R2 \
+sim:/main/MEM_WB_out_W2 \
+sim:/main/MEM_WB_out_dst1 \
+sim:/main/MEM_WB_out_dst2 \
+sim:/main/MEM_WB_out_dst1Data \
+sim:/main/MEM_WB_out_dst2Data \
+sim:/main/dataRam_W \
+sim:/main/dataRam_R \
+sim:/main/dataRam_addressToMemory \
+sim:/main/dataRam_dataToMemory \
+sim:/main/dataRam_inputFromMemory \
+sim:/main/WB_OUT_WB1 \
+sim:/main/WB_OUT_WB2 \
+sim:/main/WB_OUT_dst1 \
+sim:/main/WB_OUT_dst2 \
+sim:/main/WB_OUT_dataDst1 \
+sim:/main/WB_OUT_dataDst2 \
+sim:/main/SPin \
+sim:/main/SPout \
+sim:/main/PCin \
+sim:/main/PCout
+force -freeze sim:/main/MEM_WB_out_WB1 0 0
+force -freeze sim:/main/MEM_WB_out_WB2 0 0
+force -freeze sim:/main/MEM_WB_out_R1 0 0
+force -freeze sim:/main/MEM_WB_out_W1 0 0
+force -freeze sim:/main/MEM_WB_out_R2 0 0
+force -freeze sim:/main/MEM_WB_out_W2 0 0
+force -freeze sim:/main/MEM_WB_out_dst1 000 0
+force -freeze sim:/main/MEM_WB_out_dst2 000 0
+force -freeze sim:/main/MEM_WB_out_dst1Data UUUUUUUUUUUUUUUU 0
+force -freeze sim:/main/MEM_WB_out_dst2Data UUUUUUUUUUUUUUUU 0
+force -freeze sim:/main/EX_MEM_out_WB1 0 0
+force -freeze sim:/main/EX_MEM_out_WB2 0 0
+force -freeze sim:/main/EX_MEM_out_R1 0 0
+force -freeze sim:/main/EX_MEM_out_W1 0 0
+force -freeze sim:/main/EX_MEM_out_R2 0 0
+force -freeze sim:/main/EX_MEM_out_W2 0 0
+force -freeze sim:/main/EX_MEM_out_ex1 0 0
+force -freeze sim:/main/EX_MEM_out_ex2 0 0
+force -freeze sim:/main/EX_MEM_out_dst1 111 0
+force -freeze sim:/main/EX_MEM_out_dst2 101 0
+run

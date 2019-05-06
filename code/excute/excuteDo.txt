@@ -1,0 +1,127 @@
+vsim -gui work.excution
+# vsim -gui work.excution 
+# Start time: 20:47:19 on May 03,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.excution(excutionarch)
+# Loading work.forwardunit(forwardunitarch)
+# Loading work.forwarddesidor(forwarddesidorarch)
+# Loading work.mux_2x1(mux_2x1arch)
+# Loading work.mux_4x1(mux_4x1arch)
+# Loading work.alu(aluarch)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.shifter(shifterarch)
+add wave -position insertpoint  \
+sim:/excution/clk \
+sim:/excution/flagIn \
+sim:/excution/ID_EX_src1Exist \
+sim:/excution/ID_EX_dst1Exist \
+sim:/excution/ID_EX_src2Exist \
+sim:/excution/ID_EX_dst2Exist \
+sim:/excution/ID_EX_src1 \
+sim:/excution/ID_EX_dst1 \
+sim:/excution/ID_EX_src2 \
+sim:/excution/ID_EX_dst2 \
+sim:/excution/ID_EX_src1Data \
+sim:/excution/ID_EX_dst1Data \
+sim:/excution/ID_EX_src2Data \
+sim:/excution/ID_EX_dst2Data \
+sim:/excution/ID_EX_aluSelector1 \
+sim:/excution/ID_EX_aluSelector2 \
+sim:/excution/ID_EX_opCode1 \
+sim:/excution/ID_EX_opCode2 \
+sim:/excution/ID_EX_R1 \
+sim:/excution/ID_EX_R2 \
+sim:/excution/ID_EX_W1 \
+sim:/excution/ID_EX_W2 \
+sim:/excution/ID_EX_ex1 \
+sim:/excution/ID_EX_ex2 \
+sim:/excution/EX_MEM_dst1 \
+sim:/excution/EX_MEM_dst2 \
+sim:/excution/EX_MEM_dst1Data \
+sim:/excution/EX_MEM_dst2Data \
+sim:/excution/EX_MEM_ex1 \
+sim:/excution/EX_MEM_ex2 \
+sim:/excution/MEM_WB_dst1 \
+sim:/excution/MEM_WB_dst2 \
+sim:/excution/MEM_WB_dst1Data \
+sim:/excution/MEM_WB_dst2Data \
+sim:/excution/MEM_WB_R1 \
+sim:/excution/MEM_WB_R2 \
+sim:/excution/brashAddress \
+sim:/excution/aluOut1 \
+sim:/excution/aluOut2 \
+sim:/excution/flagOut \
+sim:/excution/A1 \
+sim:/excution/B1 \
+sim:/excution/C1 \
+sim:/excution/D1 \
+sim:/excution/A2 \
+sim:/excution/B2 \
+sim:/excution/C2 \
+sim:/excution/D2 \
+sim:/excution/E1 \
+sim:/excution/F1 \
+sim:/excution/G1 \
+sim:/excution/H1 \
+sim:/excution/E2 \
+sim:/excution/F2 \
+sim:/excution/G2 \
+sim:/excution/H2 \
+sim:/excution/aluForward \
+sim:/excution/memryForward \
+sim:/excution/alu1Inp1 \
+sim:/excution/alu1Inp2 \
+sim:/excution/alu1Outp \
+sim:/excution/alu2Inp1 \
+sim:/excution/alu2Inp2 \
+sim:/excution/alu2Outp \
+sim:/excution/alu1A_ALUforwarding \
+sim:/excution/alu1A_MEMforwarding \
+sim:/excution/alu1B_ALUforwarding \
+sim:/excution/alu1B_MEMforwarding \
+sim:/excution/alu2A_ALUforwarding \
+sim:/excution/alu2A_MEMforwarding \
+sim:/excution/alu2B_ALUforwarding \
+sim:/excution/alu2B_MEMforwarding \
+sim:/excution/alu1Inp1Selector \
+sim:/excution/alu1Inp2Selector \
+sim:/excution/alu2Inp1Selector \
+sim:/excution/alu2Inp2Selector
+force -freeze sim:/excution/ID_EX_src1Data 16#ABC 0
+force -freeze sim:/excution/ID_EX_dst1Data 16#FD 0
+force -freeze sim:/excution/ID_EX_src2Data 16#FFF1 0
+force -freeze sim:/excution/ID_EX_dst2Data 16#fde 0
+force -freeze sim:/excution/ID_EX_src1Exist 1 0
+force -freeze sim:/excution/ID_EX_dst1Exist 1 0
+force -freeze sim:/excution/ID_EX_src2Exist 0 0
+force -freeze sim:/excution/ID_EX_dst2Exist 0 0
+force -freeze sim:/excution/ID_EX_src1 101 0
+force -freeze sim:/excution/ID_EX_dst1 101 0
+force -freeze sim:/excution/ID_EX_src2 110 0
+force -freeze sim:/excution/ID_EX_dst2 000 0
+force -freeze sim:/excution/ID_EX_aluSelector1 0000 0
+force -freeze sim:/excution/ID_EX_aluSelector2 0000 0
+force -freeze sim:/excution/ID_EX_opCode1 1 0
+force -freeze sim:/excution/ID_EX_opCode2 1 0
+force -freeze sim:/excution/ID_EX_R1 0 0
+force -freeze sim:/excution/ID_EX_R2 0 0
+force -freeze sim:/excution/ID_EX_W1 0 0
+force -freeze sim:/excution/ID_EX_W2 0 0
+force -freeze sim:/excution/ID_EX_ex1 0 0
+force -freeze sim:/excution/ID_EX_ex2 0 0
+force -freeze sim:/excution/EX_MEM_dst1 010 0
+force -freeze sim:/excution/EX_MEM_dst2 010 0
+force -freeze sim:/excution/EX_MEM_dst1Data 10#241 0
+force -freeze sim:/excution/EX_MEM_dst2Data 10#57 0
+force -freeze sim:/excution/EX_MEM_ex1 0 0
+force -freeze sim:/excution/EX_MEM_ex2 0 0
+force -freeze sim:/excution/MEM_WB_dst1 010 0
+force -freeze sim:/excution/MEM_WB_dst2 011 0
+force -freeze sim:/excution/MEM_WB_dst1Data 10#445 0
+force -freeze sim:/excution/MEM_WB_dst2Data 10#85 0
+force -freeze sim:/excution/MEM_WB_R1 0 0
+force -freeze sim:/excution/MEM_WB_R2 0 0
