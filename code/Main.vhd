@@ -103,7 +103,7 @@ begin
   ---------------------------------------------------------------------------------------------------
   --Fetch Stage
 	dummy<=  (others=>'0');
-	D2<=IF_ID_out_Opcode2 &IF_ID_out_src2Exist&IF_ID_out_dst2Exist&IF_ID_in_dummy3bits2&IF_ID_out_src2&IF_ID_out_dst2;
+	D2<=IF_ID_out_Opcode2 &IF_ID_out_src2Exist&IF_ID_out_dst2Exist&IF_ID_out_dummy3bits2&IF_ID_out_src2&IF_ID_out_dst2;
   
 FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
   ,D2 => D2
@@ -204,6 +204,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,MEM_WB_out_dst1,MEM_WB_out_dst2
       ,MEM_WB_out_dst1Data,MEM_WB_out_dst2Data
       ,MEM_WB_out_R1,MEM_WB_out_R2
+
       ,branshAddress
       ,EX_MEM_in_dst1Data,EX_MEM_in_dst2Data
       ,flagRegister
@@ -213,11 +214,18 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     EX_MEM_in_opCode1 <= ID_EX_out_Opcode1;
     EX_MEM_in_opCode2 <= ID_EX_out_Opcode2;
     EX_MEM_in_src1Data <= ID_EX_out_src1Data;
-    EX_MEM_in_src1Data <=ID_EX_out_src2Data;
+    EX_MEM_in_src2Data <=ID_EX_out_src2Data;
     EX_MEM_in_src1 <= ID_EX_out_src1;
     EX_MEM_in_src2 <= ID_EX_out_src2;
     EX_MEM_in_dst1 <= ID_EX_out_dst1;
     EX_MEM_in_dst2 <= ID_EX_out_dst2;
+    EX_MEM_in_src1Exist <= ID_EX_out_src1Exist;
+    EX_MEM_in_src2Exist <= ID_EX_out_src2Exist;
+    EX_MEM_in_dst1Exist <= ID_EX_out_dst1Exist;
+    EX_MEM_in_dst2Exist <= ID_EX_out_dst2Exist;
+    EX_MEM_in_WB1 <= ID_EX_out_WB1;  EX_MEM_in_WB2 <= ID_EX_out_WB2;
+    EX_MEM_in_R1 <= ID_EX_out_R1; EX_MEM_in_W1 <= ID_EX_out_W1; EX_MEM_in_R2 <= ID_EX_out_R2; EX_MEM_in_W2 <=ID_EX_out_W2;
+
     -------------------------------------------------------------------------------------------------
 
 
@@ -240,7 +248,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,Q(16 downto 14) => EX_MEM_out_src1, Q(19 downto 17) => EX_MEM_out_dst1, Q(22 downto 20) => EX_MEM_out_src2, Q(25 downto 23) => EX_MEM_out_dst2                          -- 12 bit
       ,Q(26) => EX_MEM_out_WB1, Q(27) => EX_MEM_out_WB2, Q(28) => EX_MEM_out_R1, Q(29) => EX_MEM_out_R2,Q(30) => EX_MEM_out_W1, Q(31) => EX_MEM_out_W2
       ,Q(47 downto 32) => EX_MEM_out_src1Data,Q(63 downto 48) => EX_MEM_out_src2Data
-      ,Q(79 downto 64) => EX_MEM_out_dst1Data,Q(95 downto 80) => EX_MEM_out_dst1Data
+      ,Q(79 downto 64) => EX_MEM_out_dst1Data,Q(95 downto 80) => EX_MEM_out_dst2Data
       ,Q(96) => EX_MEM_out_ex1 ,Q(97) => EX_MEM_out_ex2
     );
 
@@ -275,13 +283,14 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
 --    MEM_WB_in_dst1Data, MEM_WB_in_dst2Data
 --    );
 
-  
+  -- passing 
+    MEM_WB_in_WB1 <= EX_MEM_out_WB1; MEM_WB_in_WB2 <= EX_MEM_out_WB2;
+    MEM_WB_in_R1 <= EX_MEM_out_R1; MEM_WB_in_W1 <= EX_MEM_out_W1; MEM_WB_in_R2 <= EX_MEM_out_R2; MEM_WB_in_W2 <=EX_MEM_out_W2;
+    MEM_WB_in_dst1 <= EX_MEM_out_dst1;
+    MEM_WB_in_dst2 <= EX_MEM_out_dst2;
 --    -------------------------------------------------------------------------------------------------
 
---
---    
---    
-    -- MEM/WB register
+-- MEM/WB register
     MEM_WB_Register: entity work.nBitRegister generic map(44) port map(
       D(0) => MEM_WB_in_WB1, D(1) => MEM_WB_in_WB2, D(2) => MEM_WB_in_R1
       ,D(3) => MEM_WB_in_W1,  D(4) => MEM_WB_in_R2,  D(5) => MEM_WB_in_W2
