@@ -9,6 +9,7 @@ entity main is
   ) ;
 end main;
 architecture mainArch of main is
+    signal CLKNOT : std_logic;
      ------ input and output signals from entity fetch-------------
     signal dummy:std_logic_vector(19 downto 0);
     signal D2: std_logic_vector(15 downto 0);
@@ -91,6 +92,8 @@ architecture mainArch of main is
     -------------------------------------------------------------------------------------------------
 
 begin
+
+    CLKNOT<=not clk;
     -- Register File
     theRegisterFile:entity work.registerFile port map(clk,reset
     ,IF_ID_out_src1Exist,IF_ID_out_src2Exist
@@ -137,7 +140,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       , D(48 downto 46) => IF_ID_in_dummy3bits1
       , D(51 downto 49) => IF_ID_in_dummy3bits2
       , D(52) => IF_ID_in_s
-      ,clk => clk                                                                              
+      ,clk =>CLKNOT                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
       ,Q(0) => IF_ID_out_src1Exist, Q(1) => IF_ID_out_src2Exist, Q(2) => IF_ID_out_dst1Exist, Q(3) => IF_ID_out_dst2Exist 
@@ -178,7 +181,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,D(47 downto 32) => ID_EX_in_src1Data,D(63 downto 48) => ID_EX_in_src2Data
       ,D(79 downto 64) => ID_EX_in_dst1Data,D(95 downto 80) => ID_EX_in_dst1Data
       ,D(99 downto 96) => ID_EX_in_ALUSelection1,D(103 downto 100) => ID_EX_in_ALUSelection2
-      ,clk => clk                                                                              
+      ,clk => CLKNOT                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
       ,Q(0) => ID_EX_out_src1Exist, Q(1) => ID_EX_out_src2Exist, Q(2) => ID_EX_out_dst1Exist, Q(3) => ID_EX_out_dst2Exist 
@@ -245,7 +248,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,D(79 downto 64) => EX_MEM_in_dst1Data,D(95 downto 80) => EX_MEM_in_dst2Data
       ,D(96) => EX_MEM_in_ex1 ,D(97) => EX_MEM_in_ex2
      
-     ,clk => clk                                                                              
+     ,clk =>CLKNOT                                                                              
      ,rst => reset                                                                            
      ,en => '1'    
 
@@ -284,7 +287,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,D(3) => MEM_WB_in_W1,  D(4) => MEM_WB_in_R2,  D(5) => MEM_WB_in_W2
       ,D(8 downto 6) => MEM_WB_in_dst1,D(11 downto 9) => MEM_WB_in_dst2
       ,D(27 downto 12) => MEM_WB_in_dst1Data,D(43 downto 28) => MEM_WB_in_dst2Data
-      ,clk => clk                                                                              
+      ,clk =>CLKNOT                                                                              
       ,rst => reset                                                                            
       ,en => '1'   
 
