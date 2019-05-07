@@ -238,8 +238,8 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     EX_MEM_in_R1 <= ID_EX_out_R1; EX_MEM_in_W1 <= ID_EX_out_W1; EX_MEM_in_R2 <= ID_EX_out_R2; EX_MEM_in_W2 <=ID_EX_out_W2;
 
     -------------------------------------------------------------------------------------------------
-
-
+  
+    
     -- EX/MEM register
     EX_MEM_Register: entity work.nBitRegister generic map(98) port map(
       D(0) => EX_MEM_in_src1Exist, D(1) => EX_MEM_in_src2Exist, D(2) => EX_MEM_in_dst1Exist, D(3) => EX_MEM_in_dst2Exist       -- 4 bit
@@ -262,7 +262,10 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,Q(79 downto 64) => EX_MEM_out_dst1Data,Q(95 downto 80) => EX_MEM_out_dst2Data
       ,Q(96) => EX_MEM_out_ex1 ,Q(97) => EX_MEM_out_ex2
     );
-	
+  
+     OutPort <= EX_MEM_out_dst1Data    when EX_MEM_out_Opcode1=OOUT 
+      else  EX_MEM_out_dst2Data        when EX_MEM_out_Opcode2=OOUT ;
+
     -- Memory Stage
     MemoryStage:entity work.Memory port map (clk
     ,EX_MEM_out_src1Data,EX_MEM_out_src2Data
@@ -282,7 +285,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     MEM_WB_in_dst1 <= EX_MEM_out_dst1;
     MEM_WB_in_dst2 <= EX_MEM_out_dst2;
     -------------------------------------------------------------------------------------------------
-
+      
 -- MEM/WB register
     MEM_WB_Register: entity work.nBitRegister generic map(44) port map(
       D(0) => MEM_WB_in_WB1, D(1) => MEM_WB_in_WB2, D(2) => MEM_WB_in_R1

@@ -9,6 +9,6 @@
 100
 
 .ORG 2
-inc R1
-inc R2
-STD R1,R2
+out R1
+in R2
+mov R2 , R1

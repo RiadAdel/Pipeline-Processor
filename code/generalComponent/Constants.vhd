@@ -54,7 +54,8 @@ constant ALUSHL: std_logic_vector(3 downto 0)           :="1000";
 constant ALUSHR: std_logic_vector(3 downto 0)           :="1001";
 constant ALUFEQUALB: std_logic_vector(3 downto 0)       :="1010";
 constant ALUFEQUALZZ: std_logic_vector(3 downto 0)      :="1011";
+constant ALUFEQUALA : std_logic_vector(3 downto 0 )     :="1101";
 
-constant ALUSETC: std_logic_vector(3 downto 0)     :="0001";
-constant ALUCLEARC: std_logic_vector(3 downto 0)   :="0010";
+constant ALUSETC: std_logic_vector(3 downto 0)     :="1100";
+constant ALUCLEARC: std_logic_vector(3 downto 0)   :="1110";
 end constants;

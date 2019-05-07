@@ -63,6 +63,7 @@ else ALUAND when IF_ID_OpCode1 = AAND
 else ALUOR when IF_ID_OpCode1 = OOR
 else ALUSHL when IF_ID_OpCode1 = SHL
 else ALUSHR when IF_ID_OpCode1 = SHR  
+else ALUFEQUALA when IF_ID_OpCode1= IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1 = OOUT
 else ALUFEQUALB when IF_ID_OpCode1 = JZ or IF_ID_OpCode1 = JN or IF_ID_OpCode1 = JC or IF_ID_OpCode1 = CALL or IF_ID_OpCode1 = JMP
 else ALUFEQUAL0;
 
@@ -80,6 +81,7 @@ else ALUAND when IF_ID_OpCode2 = AAND
 else ALUOR when IF_ID_OpCode2 = OOR
 else ALUSHL when IF_ID_OpCode2 = SHL
 else ALUSHR when IF_ID_OpCode2 = SHR  
+else ALUFEQUALA when IF_ID_OpCode2= IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1 = OOUT
 else ALUFEQUALB when IF_ID_OpCode2 = JZ or IF_ID_OpCode2 = JN or IF_ID_OpCode2 = JC or IF_ID_OpCode2 = CALL or IF_ID_OpCode2 = JMP
 else ALUFEQUAL0 ;
 
