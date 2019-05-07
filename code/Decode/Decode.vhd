@@ -45,6 +45,8 @@ or (IF_ID_Dst1 = IF_ID_Src2 and IF_ID_DST1Exist='1'  and IF_ID_SRC2Exist='1' )
 or (IF_ID_OpCode2 = LDM ) 
 or (IF_ID_OpCode1(4 downto 3) = "10" and IF_ID_OpCode2(4 downto 3) = "10" ) 
 or ((IF_ID_OpCode1(4 downto 3) = "00" or IF_ID_OpCode1(4 downto 3) = "01"  ) and IF_ID_OpCode1 /= NOP and IF_ID_OpCode1 /= OOUT and IF_ID_OpCode1 /= MOV and IF_ID_OpCode2(4 downto 3 )= "11"   )
+or (IF_ID_OpCode1 = OOUT and IF_ID_OpCode2 = OOUT)
+or (IF_ID_OpCode1 = IIN and IF_ID_OpCode1 = IIN )
 else '0';
 
 

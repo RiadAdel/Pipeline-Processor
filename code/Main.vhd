@@ -260,7 +260,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,Q(79 downto 64) => EX_MEM_out_dst1Data,Q(95 downto 80) => EX_MEM_out_dst2Data
       ,Q(96) => EX_MEM_out_ex1 ,Q(97) => EX_MEM_out_ex2
     );
-
+	
     -- Memory Stage
     MemoryStage:entity work.Memory port map (clk
     ,EX_MEM_out_src1Data,EX_MEM_out_src2Data
