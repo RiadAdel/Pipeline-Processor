@@ -25,13 +25,8 @@ BEGIN
      
 
 
---ToPcOut <= Fetch1	    when latchedRst = '1' else   ---- interupt condition to do --
-	--pcAddressPlusOne    when S = '1' and branch='0' and RTIandRET = '0'  else--
-	--branchAdd 	    when branch = '1' and  (RTIandRET = '0'   or (RTIandRET ='1' and branch1='1' )) else
---	returnAddress       when RTIandRET ='1' and branch1='0' else
---	pcAddressPlusTwo   ;--
 
-process (latchedRST,S,branch,RTIandRET,branch1)
+process (latchedRST,S,branch,RTIandRET,branch1,clk)
 	
 begin
 	
