@@ -220,6 +220,7 @@ sim:/main/PCin \
 sim:/main/PCout
 force -freeze sim:/main/clk 0 0, 1 {50 ps} -r 100
 force -freeze sim:/main/reset 1 0
+force -freeze sim:/main/int 0 0
 mem load -i {D:/3rd Year/Arch/structure.mem} /main/FetchStage/instructionMemory/ram
 
 
