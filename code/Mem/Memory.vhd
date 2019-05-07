@@ -41,7 +41,7 @@ BEGIN
 	dataRam_dataToMemory <= EX_MEM_dataSrc1 WHEN W2 = '0' ELSE EX_MEM_dataSrc2 WHEN W2 = '1';
 	
 	dataRam_R <= R1 OR  R2;
-	dataRam_W <= W1 AND W2;
+	dataRam_W <= W1 OR W2;
 
 	-- RAM data only
     	dataRam: entity work.Ram  generic map(1) port map(
