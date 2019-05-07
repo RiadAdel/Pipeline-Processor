@@ -214,6 +214,8 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,MEM_WB_out_dst1Data,MEM_WB_out_dst2Data
       ,MEM_WB_out_R1,MEM_WB_out_R2
 
+      ,InPort
+
       ,branshAddress
       ,EX_MEM_in_dst1Data,EX_MEM_in_dst2Data
       ,flagRegister
