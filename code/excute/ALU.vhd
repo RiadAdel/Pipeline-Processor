@@ -73,7 +73,7 @@ begin
   else (others => '0');
 
   C <= shifterCarryOut when s = "1000" or s = "1001"
-  else adderCarryOut when s = "0010" or s = "0011" or s = "0100" or s = "0101" and s /= "1101"
+  else adderCarryOut when s = "0010" or s = "0011" or s = "0100" or s = "0101"
   else '1' when s ="1011" -- set carry
   else '0' when s ="1100"; -- clear carry
 

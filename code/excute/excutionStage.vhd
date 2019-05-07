@@ -2,6 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.constants.all;
 entity excution is
   port (
     clk:in std_logic;-- clock
@@ -22,6 +23,9 @@ entity excution is
     MEM_WB_dst1,MEM_WB_dst2:in std_logic_vector(2 downto 0);
     MEM_WB_dst1Data,MEM_WB_dst2Data:in std_logic_vector(15 downto 0);
     MEM_WB_R1,MEM_WB_R2:in std_logic;
+
+    -- in port
+    inData:in std_logic_vector(15 downto 0);
 
     -- outputs
     brashAddress:out std_logic_vector(31 downto 0); -- PC when branshing
@@ -45,6 +49,7 @@ architecture excutionArch of excution is
     signal aluForward,memryForward:std_logic;
 
     -- Alu signals
+    signal newAlu1Inp1,newAlu2Inp1:std_logic_vector(15 downto 0);
     signal alu1Inp1,alu1Inp2,alu2Inp1,alu2Inp2:std_logic_vector(15 downto 0);
     signal alu1Outp,alu2Outp:std_logic_vector(15 downto 0);
     signal alu1A_ALUforwarding,alu1A_MEMforwarding,alu1B_ALUforwarding,alu1B_MEMforwarding,alu2A_ALUforwarding,alu2A_MEMforwarding,alu2B_ALUforwarding,alu2B_MEMforwarding:std_logic_vector(15 downto 0);
@@ -107,12 +112,15 @@ begin
     aluB1: entity work.MUX_4x1 port map(ID_EX_dst1Data,alu1B_ALUforwarding,alu1B_MEMforwarding, alu1B_ALUforwarding , alu1Inp2Selector ,alu1Inp2);
     aluA2: entity work.MUX_4x1 port map(ID_EX_src2Data,alu2A_ALUforwarding,alu2A_MEMforwarding, alu2A_ALUforwarding , alu2Inp1Selector ,alu2Inp1);
     aluB2: entity work.MUX_4x1 port map(ID_EX_dst2Data,alu2B_ALUforwarding,alu2B_MEMforwarding, alu2B_ALUforwarding , alu2Inp2Selector ,alu2Inp2);
-    
+
     aluOut1 <=alu1Outp;
     aluOut2 <=alu2Outp;
 
-
-    Alu1:entity work.ALU port map(ID_EX_aluSelector1,alu1Inp1,alu1Inp2,alu1Outp,carry1,negative1,zero1);
-    Alu2:entity work.ALU port map(ID_EX_aluSelector2,alu2inp2,alu2Inp2,alu2Outp,carry2,negative2,zero2);
+    newAlu1Inp1 <= inData when ID_EX_opCode1 = IIN
+    else alu1Inp1;
+    newAlu2Inp1 <= inData when ID_EX_opCode2 = IIN
+    else alu2Inp1;
+    Alu1:entity work.ALU port map(ID_EX_aluSelector1,newAlu1Inp1,alu1Inp2,alu1Outp,carry1,negative1,zero1);
+    Alu2:entity work.ALU port map(ID_EX_aluSelector2,newAlu2Inp1,alu2Inp2,alu2Outp,carry2,negative2,zero2);
     --------------------------------------------------------------
 end excutionArch ; -- excutionArch
