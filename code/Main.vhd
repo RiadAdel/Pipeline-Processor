@@ -128,7 +128,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
 --    -------------------------------------------------------------------------------------------------
 
     -- IF/ID register
-    IF_ID_Register: entity work.nBitRegister generic map(52) port map(
+    IF_ID_Register: entity work.nBitRegister generic map(53) port map(
       D(0) => IF_ID_in_src1Exist, D(1) => IF_ID_in_src2Exist, D(2) => IF_ID_in_dst1Exist, D(3) => IF_ID_in_dst2Exist       -- 4 bit
       , D(8 downto 4) => IF_ID_in_Opcode1, D(13 downto 9) => IF_ID_in_Opcode2                                                -- 10 bit
       , D(16 downto 14) => IF_ID_in_src1, D(19 downto 17) => IF_ID_in_dst1, D(22 downto 20) => IF_ID_in_src2, D(25 downto 23) => IF_ID_in_dst2  
@@ -165,7 +165,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ID_EX_in_dst1 <= IF_ID_out_dst1;
       ID_EX_in_src2 <= IF_ID_out_src2;
       ID_EX_in_dst2 <= IF_ID_out_dst2;
-      IF_ID_in_s <= fetchController
+      IF_ID_in_s <= fetchController;
     -------------------------------------------------------------------------------------------------
 
     -- ID/EX register
@@ -241,7 +241,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,D(16 downto 14) => EX_MEM_in_src1, D(19 downto 17) => EX_MEM_in_dst1, D(22 downto 20) => EX_MEM_in_src2, D(25 downto 23) => EX_MEM_in_dst2                          -- 12 bit
       ,D(26) => EX_MEM_in_WB1, D(27) => EX_MEM_in_WB2, D(28) => EX_MEM_in_R1, D(29) => EX_MEM_in_R2,D(30) => EX_MEM_in_W1, D(31) => EX_MEM_in_W2
       ,D(47 downto 32) => EX_MEM_in_src1Data,D(63 downto 48) => EX_MEM_in_src2Data
-      ,D(79 downto 64) => EX_MEM_in_dst1Data,D(95 downto 80) => EX_MEM_in_dst1Data
+      ,D(79 downto 64) => EX_MEM_in_dst1Data,D(95 downto 80) => EX_MEM_in_dst2Data
       ,D(96) => EX_MEM_in_ex1 ,D(97) => EX_MEM_in_ex2
      
      ,clk => clk                                                                              
