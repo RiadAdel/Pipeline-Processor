@@ -51,7 +51,7 @@ else '0';
 
 
 
-ID_EX_ALUSel1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP or IF_ID_OpCode1=OOUT or IF_ID_OpCode1 = IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1(4 downto 3) = "10" or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
+ID_EX_ALUSel1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP  or IF_ID_OpCode1(4 downto 3) = "10" or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
 else  ALUSETC when IF_ID_OpCode1 = SETC 
 else ALUCLEARC when IF_ID_OpCode1 = CLRC
 else ALUNOT when IF_ID_OpCode1 = NNOT
@@ -69,7 +69,7 @@ else ALUFEQUAL0;
 
 ID_EX_ALUSelection1<= ID_EX_ALUSel1 when Bubble = '0' else ALUFEQUAL0;
 
-ID_EX_ALUSel2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or IF_ID_OpCode2=OOUT or IF_ID_OpCode2 = IIN or IF_ID_OpCode2 = MOV or IF_ID_OpCode2(4 downto 3) = "10" or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
+ID_EX_ALUSel2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or IF_ID_OpCode2(4 downto 3) = "10" or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
 else  ALUSETC when IF_ID_OpCode2 = SETC 
 else ALUCLEARC when IF_ID_OpCode2 = CLRC
 else ALUNOT when IF_ID_OpCode2 = NNOT

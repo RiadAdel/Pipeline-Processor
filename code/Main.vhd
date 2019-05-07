@@ -33,6 +33,7 @@ architecture mainArch of main is
     -------------------------------------------------------------------------------------------------
     
       -- ID/EX inputs
+    signal ID_EX_in_s:std_logic ;
     signal ID_EX_in_src1Exist,ID_EX_in_src2Exist,ID_EX_in_dst1Exist,ID_EX_in_dst2Exist:std_logic;
     signal ID_EX_in_Opcode1,ID_EX_in_Opcode2:std_logic_vector(4 downto 0);
     signal ID_EX_in_src1,ID_EX_in_dst1,ID_EX_in_src2,ID_EX_in_dst2:std_logic_vector(2 downto 0);
@@ -40,6 +41,7 @@ architecture mainArch of main is
     signal ID_EX_in_WB1,ID_EX_in_WB2,ID_EX_in_R1,ID_EX_in_W1,ID_EX_in_R2,ID_EX_in_W2:std_logic;
     signal ID_EX_in_ALUSelection1,ID_EX_in_ALUSelection2:std_logic_vector(3 downto 0);
     -- ID/EX outputs
+    signal ID_EX_out_s: std_logic;
     signal ID_EX_out_src1Exist,ID_EX_out_src2Exist,ID_EX_out_dst1Exist,ID_EX_out_dst2Exist:std_logic;
     signal ID_EX_out_Opcode1,ID_EX_out_Opcode2:std_logic_vector(4 downto 0);
     signal ID_EX_out_src1,ID_EX_out_dst1,ID_EX_out_src2,ID_EX_out_dst2:std_logic_vector(2 downto 0);
@@ -112,7 +114,7 @@ begin
   
 FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
   ,D2 => D2
-  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> fetchController 
+  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> ID_EX_out_s 
   ,reset => reset , Bubble => '0',clk => clk 
 
   ,IR1Out(15 downto 11) => IF_ID_in_Opcode1 
@@ -169,11 +171,11 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ID_EX_in_dst1 <= IF_ID_out_dst1;
       ID_EX_in_src2 <= IF_ID_out_src2;
       ID_EX_in_dst2 <= IF_ID_out_dst2;
-      IF_ID_in_s <= fetchController;
+      ID_EX_in_s <= fetchController;
     -------------------------------------------------------------------------------------------------
 
     -- ID/EX register
-    ID_EX_Register: entity work.nBitRegister generic map(104) port map(
+    ID_EX_Register: entity work.nBitRegister generic map(105) port map(
       D(0) => ID_EX_in_src1Exist, D(1) => ID_EX_in_src2Exist, D(2) => ID_EX_in_dst1Exist, D(3) => ID_EX_in_dst2Exist       -- 4 bit
       , D(8 downto 4) => ID_EX_in_Opcode1, D(13 downto 9) => ID_EX_in_Opcode2                                                -- 10 bit
       , D(16 downto 14) => ID_EX_in_src1, D(19 downto 17) => ID_EX_in_dst1, D(22 downto 20) => ID_EX_in_src2, D(25 downto 23) => ID_EX_in_dst2                          -- 12 bit
@@ -181,6 +183,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,D(47 downto 32) => ID_EX_in_src1Data,D(63 downto 48) => ID_EX_in_src2Data
       ,D(79 downto 64) => ID_EX_in_dst1Data,D(95 downto 80) => ID_EX_in_dst1Data
       ,D(99 downto 96) => ID_EX_in_ALUSelection1,D(103 downto 100) => ID_EX_in_ALUSelection2
+      ,D(104)=>ID_EX_in_s
       ,clk => CLKNOT                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
@@ -191,6 +194,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,Q(47 downto 32) => ID_EX_out_src1Data,Q(63 downto 48) => ID_EX_out_src2Data
       ,Q(79 downto 64) => ID_EX_out_dst1Data,Q(95 downto 80) => ID_EX_out_dst2Data
       ,Q(99 downto 96) => ID_EX_out_ALUSelection1,Q(103 downto 100) => ID_EX_out_ALUSelection2
+      ,Q(104)=>ID_EX_out_s
       );
     -------------------------------------------------------------------------------------------------
 

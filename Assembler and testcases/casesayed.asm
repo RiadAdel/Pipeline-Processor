@@ -9,6 +9,15 @@
 100
 
 .ORG 2
-out R1
-in R2
-mov R2 , R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+inc R1
+
+
