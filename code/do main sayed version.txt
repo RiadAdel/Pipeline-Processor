@@ -1,0 +1,225 @@
+vsim -gui work.main
+# vsim -gui work.main 
+# Start time: 00:43:33 on May 07,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading work.constants
+# Loading ieee.numeric_std(body)
+# Loading work.main(mainarch)
+# Loading work.registerfile(archregisterfile)
+# Loading work.decoder(dec)
+# Loading work.nbitregister(data_flow)
+# Loading work.custommux(archcustommux)
+# Loading work.fetch(archoffetch)
+# Loading work.ram(syncrama)
+# Loading work.pcadders(pcaddersarch)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# ** Warning: (vsim-3473) Component instance "IR1 : MUX2x1" is not bound.
+#    Time: 0 ps  Iteration: 0  Instance: /main/FetchStage File: D:/3rd Year/Arch/Project/code/Fetch/fetchMain.vhd
+# ** Warning: (vsim-3473) Component instance "IR2 : MUX2x1" is not bound.
+#    Time: 0 ps  Iteration: 0  Instance: /main/FetchStage File: D:/3rd Year/Arch/Project/code/Fetch/fetchMain.vhd
+# Loading work.pcmux(pcmuxarch)
+# Loading work.stagedecode(de)
+# Loading work.excution(excutionarch)
+# Loading work.forwardunit(forwardunitarch)
+# Loading work.forwarddesidor(forwarddesidorarch)
+# Loading work.mux_2x1(mux_2x1arch)
+# Loading work.mux_4x1(mux_4x1arch)
+# Loading work.alu(aluarch)
+# Loading work.shifter(shifterarch)
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(15 downto 13) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(12 downto 10) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(9 downto 7) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(6) has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(5) has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR1Out(4 downto 0) has no driver.
+# This port will contribute value (UUUUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(15 downto 13) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(12 downto 10) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(9 downto 7) has no driver.
+# This port will contribute value (UUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(6) has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(5) has no driver.
+# This port will contribute value (U) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/FetchStage/IR2Out(4 downto 0) has no driver.
+# This port will contribute value (UUUUU) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /main/ExcutionStage/brashAddress(31 downto 0) has no driver.
+# This port will contribute value (UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU) to the signal network.
+add wave -position insertpoint  \
+sim:/main/clk \
+sim:/main/reset \
+sim:/main/int \
+sim:/main/InPort \
+sim:/main/reg1 \
+sim:/main/reg2 \
+sim:/main/reg3 \
+sim:/main/reg4 \
+sim:/main/reg5 \
+sim:/main/reg6 \
+sim:/main/reg7 \
+sim:/main/reg8 \
+sim:/main/OutPort \
+sim:/main/dummy \
+sim:/main/D2 \
+sim:/main/flagRegister \
+sim:/main/branshAddress \
+sim:/main/IF_ID_in_src1Exist \
+sim:/main/IF_ID_in_src2Exist \
+sim:/main/IF_ID_in_dst1Exist \
+sim:/main/IF_ID_in_dst2Exist \
+sim:/main/IF_ID_in_Opcode1 \
+sim:/main/IF_ID_in_Opcode2 \
+sim:/main/IF_ID_in_src1 \
+sim:/main/IF_ID_in_dst1 \
+sim:/main/IF_ID_in_src2 \
+sim:/main/IF_ID_in_dst2 \
+sim:/main/fetchController \
+sim:/main/IF_ID_in_PcPlus1 \
+sim:/main/IF_ID_in_dummy3bits1 \
+sim:/main/IF_ID_in_dummy3bits2 \
+sim:/main/IF_ID_out_src1Exist \
+sim:/main/IF_ID_out_src2Exist \
+sim:/main/IF_ID_out_dst1Exist \
+sim:/main/IF_ID_out_dst2Exist \
+sim:/main/IF_ID_out_Opcode1 \
+sim:/main/IF_ID_out_Opcode2 \
+sim:/main/IF_ID_out_src1 \
+sim:/main/IF_ID_out_dst1 \
+sim:/main/IF_ID_out_src2 \
+sim:/main/IF_ID_out_dst2 \
+sim:/main/IF_ID_out_PcPlus1 \
+sim:/main/IF_ID_out_dummy3bits1 \
+sim:/main/IF_ID_out_dummy3bits2 \
+sim:/main/ID_EX_in_src1Exist \
+sim:/main/ID_EX_in_src2Exist \
+sim:/main/ID_EX_in_dst1Exist \
+sim:/main/ID_EX_in_dst2Exist \
+sim:/main/ID_EX_in_Opcode1 \
+sim:/main/ID_EX_in_Opcode2 \
+sim:/main/ID_EX_in_src1 \
+sim:/main/ID_EX_in_dst1 \
+sim:/main/ID_EX_in_src2 \
+sim:/main/ID_EX_in_dst2 \
+sim:/main/ID_EX_in_src1Data \
+sim:/main/ID_EX_in_dst1Data \
+sim:/main/ID_EX_in_src2Data \
+sim:/main/ID_EX_in_dst2Data \
+sim:/main/ID_EX_in_WB1 \
+sim:/main/ID_EX_in_WB2 \
+sim:/main/ID_EX_in_R1 \
+sim:/main/ID_EX_in_W1 \
+sim:/main/ID_EX_in_R2 \
+sim:/main/ID_EX_in_W2 \
+sim:/main/ID_EX_in_ALUSelection1 \
+sim:/main/ID_EX_in_ALUSelection2 \
+sim:/main/ID_EX_out_src1Exist \
+sim:/main/ID_EX_out_src2Exist \
+sim:/main/ID_EX_out_dst1Exist \
+sim:/main/ID_EX_out_dst2Exist \
+sim:/main/ID_EX_out_Opcode1 \
+sim:/main/ID_EX_out_Opcode2 \
+sim:/main/ID_EX_out_src1 \
+sim:/main/ID_EX_out_dst1 \
+sim:/main/ID_EX_out_src2 \
+sim:/main/ID_EX_out_dst2 \
+sim:/main/ID_EX_out_src1Data \
+sim:/main/ID_EX_out_dst1Data \
+sim:/main/ID_EX_out_src2Data \
+sim:/main/ID_EX_out_dst2Data \
+sim:/main/ID_EX_out_WB1 \
+sim:/main/ID_EX_out_WB2 \
+sim:/main/ID_EX_out_R1 \
+sim:/main/ID_EX_out_W1 \
+sim:/main/ID_EX_out_R2 \
+sim:/main/ID_EX_out_W2 \
+sim:/main/ID_EX_out_ALUSelection1 \
+sim:/main/ID_EX_out_ALUSelection2 \
+sim:/main/EX_MEM_in_src1Exist \
+sim:/main/EX_MEM_in_src2Exist \
+sim:/main/EX_MEM_in_dst1Exist \
+sim:/main/EX_MEM_in_dst2Exist \
+sim:/main/EX_MEM_in_src1 \
+sim:/main/EX_MEM_in_src2 \
+sim:/main/EX_MEM_in_dst1 \
+sim:/main/EX_MEM_in_dst2 \
+sim:/main/EX_MEM_in_src1Data \
+sim:/main/EX_MEM_in_src2Data \
+sim:/main/EX_MEM_in_dst1Data \
+sim:/main/EX_MEM_in_dst2Data \
+sim:/main/EX_MEM_in_WB1 \
+sim:/main/EX_MEM_in_WB2 \
+sim:/main/EX_MEM_in_R1 \
+sim:/main/EX_MEM_in_W1 \
+sim:/main/EX_MEM_in_R2 \
+sim:/main/EX_MEM_in_W2 \
+sim:/main/EX_MEM_in_ex1 \
+sim:/main/EX_MEM_in_ex2 \
+sim:/main/EX_MEM_out_src1Exist \
+sim:/main/EX_MEM_out_src2Exist \
+sim:/main/EX_MEM_out_dst1Exist \
+sim:/main/EX_MEM_out_dst2Exist \
+sim:/main/EX_MEM_out_src1 \
+sim:/main/EX_MEM_out_src2 \
+sim:/main/EX_MEM_out_dst1 \
+sim:/main/EX_MEM_out_dst2 \
+sim:/main/EX_MEM_out_src1Data \
+sim:/main/EX_MEM_out_src2Data \
+sim:/main/EX_MEM_out_dst1Data \
+sim:/main/EX_MEM_out_dst2Data \
+sim:/main/EX_MEM_out_WB1 \
+sim:/main/EX_MEM_out_WB2 \
+sim:/main/EX_MEM_out_R1 \
+sim:/main/EX_MEM_out_W1 \
+sim:/main/EX_MEM_out_R2 \
+sim:/main/EX_MEM_out_W2 \
+sim:/main/EX_MEM_out_ex1 \
+sim:/main/EX_MEM_out_ex2 \
+sim:/main/MEM_WB_in_WB1 \
+sim:/main/MEM_WB_in_WB2 \
+sim:/main/MEM_WB_in_R1 \
+sim:/main/MEM_WB_in_W1 \
+sim:/main/MEM_WB_in_R2 \
+sim:/main/MEM_WB_in_W2 \
+sim:/main/MEM_WB_in_dst1 \
+sim:/main/MEM_WB_in_dst2 \
+sim:/main/MEM_WB_in_dst1Data \
+sim:/main/MEM_WB_in_dst2Data \
+sim:/main/EX_MEM_in_opCode1 \
+sim:/main/EX_MEM_in_opCode2 \
+sim:/main/MEM_WB_out_WB1 \
+sim:/main/MEM_WB_out_WB2 \
+sim:/main/MEM_WB_out_R1 \
+sim:/main/MEM_WB_out_W1 \
+sim:/main/MEM_WB_out_R2 \
+sim:/main/MEM_WB_out_W2 \
+sim:/main/MEM_WB_out_dst1 \
+sim:/main/MEM_WB_out_dst2 \
+sim:/main/MEM_WB_out_dst1Data \
+sim:/main/MEM_WB_out_dst2Data \
+sim:/main/EX_MEM_out_opCode1 \
+sim:/main/EX_MEM_out_opCode2 \
+sim:/main/WB_OUT_WB1 \
+sim:/main/WB_OUT_WB2 \
+sim:/main/WB_OUT_dst1 \
+sim:/main/WB_OUT_dst2 \
+sim:/main/WB_OUT_dataDst1 \
+sim:/main/WB_OUT_dataDst2 \
+sim:/main/SPin \
+sim:/main/SPout \
+sim:/main/PCin \
+sim:/main/PCout
+force -freeze sim:/main/clk 0 0, 1 {50 ps} -r 100
+force -freeze sim:/main/reset 1 0
+mem load -i {Z:/cmp 2020/arch/project/project github/Pipeline-Processor/code/fetchMemory.mem} /main/FetchStage/instructionMemory/ram
+
+

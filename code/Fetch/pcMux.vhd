@@ -31,7 +31,7 @@ BEGIN
 --	returnAddress       when RTIandRET ='1' and branch1='0' else
 --	pcAddressPlusTwo   ;--
 
-process (latchedRST,S,branch,RTIandRET,branch1)
+process (latchedRST,S,branch,RTIandRET,branch1 ,clk)
 	
 begin
 	
