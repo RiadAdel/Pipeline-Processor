@@ -66,17 +66,17 @@ begin
     
     Nin <= negative2 when Ex2 = '1' and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
     else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010";
-    regEn <= '0' when ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010" and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
-    else '1';
+
+    regEn <= '1' when ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010" and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010" and Ex1 = '0' and Ex2 = '0'
+    else '0';
     flagRegIn <= Cin & Nin & Zin;
-    flagRegOut <= Cout & Nout & Zout;
     flagOut <= flagRegOut;
     flag_Register: entity work.nBitRegister generic map(3) port map(flagRegIn,clk,rst,regEn,flagRegOut);
     --------------------------------------------------------------
 
     -- Forward unit
     ForwardUnit: entity work.ForwardUnit port map(ID_EX_src1Exist,ID_EX_dst1Exist,ID_EX_src2Exist,ID_EX_dst2Exist
-    ,ID_EX_src1,ID_EX_dst1,ID_EX_src2,EX_MEM_dst2
+    ,ID_EX_src1,ID_EX_dst1,ID_EX_src2,ID_EX_dst2
     ,MEM_WB_R1,MEM_WB_R2,MEM_WB_dst1,MEM_WB_dst2
     ,EX_MEM_ex1,EX_MEM_ex2,EX_MEM_dst1,EX_MEM_dst2
     ,A1,B1,C1,D1,A2,B2,C2,D2
