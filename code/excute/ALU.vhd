@@ -69,6 +69,7 @@ begin
   else shift when s = "1000" -- shift left
   else shift when s = "1001" -- shift right
   else B when s = "1010" -- pass
+  else A when s = "1101" -- mov and in
   else (others => '0');
 
   C <= shifterCarryOut when s = "1000" or s = "1001"
@@ -76,9 +77,9 @@ begin
   else '1' when s ="1011" -- set carry
   else '0' when s ="1100"; -- clear carry
 
-  Z <= '1' when outp = "0000000000000000" and s /= "0000" and s /= "1010"
-  else '0' when s /= "0000" and s /= "1010";
+  Z <= '1' when outp = "0000000000000000" and s /= "0000" and s /= "1010" and s /= "1101"
+  else '0' when s /= "0000" and s /= "1010" and s /= "1101";
 
-  Ni <= '1' when outp(15) = '0' and s /= "0000" and s /= "1010"
-  else '0' when s /= "0000" and s /= "1010";
+  Ni <= '1' when outp(15) = '0' and s /= "0000" and s /= "1010" and s /= "1101"
+  else '0' when s /= "0000" and s /= "1010" and s /= "1101";
 end ALUArch ;

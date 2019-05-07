@@ -33,7 +33,7 @@ ID_EX_OpCode2<=IF_ID_OpCode2 when Bubble = '0' and Semi_S = '0' and IF_ID_OpCode
 ID_EX_R1 <= '1' when (IF_ID_OpCode1 = POP  or IF_ID_OpCode1 = LDD or IF_ID_OpCode1 = RET or IF_ID_OpCode1=RTI ) and ( Bubble = '0' ) else '0';
 ID_EX_R2 <= '1' when (IF_ID_OpCode2 = POP  or IF_ID_OpCode2 = LDD or IF_ID_OpCode2 = RET or IF_ID_OpCode2=RTI ) and ( Bubble = '0' and Semi_S= '0' and IF_ID_OpCode1 /= LDM  ) else '0';
 ID_EX_W1 <= '1' when (IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL )and ( Bubble = '0') else '0';
-ID_EX_W2 <= '1' when (IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL) and ( Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  ) else '0';
+ID_EX_W2 <= '1' when (IF_ID_OpCode2 = PUSH or IF_ID_OpCode2 = SSTD or IF_ID_OpCode2 = CALL) and ( Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  ) else '0';
 
 
 ID_EX_WB1 <= '1' when  (IF_ID_DST1Exist = '1' and  IF_ID_OpCode1 /= SSTD ) and ( Bubble = '0' )  else '0'; 
@@ -45,6 +45,8 @@ or (IF_ID_Dst1 = IF_ID_Src2 and IF_ID_DST1Exist='1'  and IF_ID_SRC2Exist='1' )
 or (IF_ID_OpCode2 = LDM ) 
 or (IF_ID_OpCode1(4 downto 3) = "10" and IF_ID_OpCode2(4 downto 3) = "10" ) 
 or ((IF_ID_OpCode1(4 downto 3) = "00" or IF_ID_OpCode1(4 downto 3) = "01"  ) and IF_ID_OpCode1 /= NOP and IF_ID_OpCode1 /= OOUT and IF_ID_OpCode1 /= MOV and IF_ID_OpCode2(4 downto 3 )= "11"   )
+or (IF_ID_OpCode1 = OOUT and IF_ID_OpCode2 = OOUT)
+or (IF_ID_OpCode1 = IIN and IF_ID_OpCode1 = IIN )
 else '0';
 
 

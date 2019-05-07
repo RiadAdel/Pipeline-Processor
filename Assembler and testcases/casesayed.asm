@@ -9,6 +9,6 @@
 100
 
 .ORG 2
-inc R1         #R1 =0001 , C--> 0, N --> 0, Z -->  0
-inc R2	       #R2 =0001 , C --> 0 , N --> 0 , Z --> 0
-add R1,R2	       #R2= FFEF, C--> no change, N -->1,Z-->0
+inc R1
+inc R2
+STD R1,R2

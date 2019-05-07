@@ -22,7 +22,7 @@ ARCHITECTURE syncrama OF Ram IS
 	SIGNAL ram : ram_type ;
 	
 	BEGIN
-		PROCESS(CLK, W, R) IS
+		PROCESS(CLK, W, R , address) IS
 		VARIABLE k, j, adds:INTEGER;
 			BEGIN
 				k := -16;

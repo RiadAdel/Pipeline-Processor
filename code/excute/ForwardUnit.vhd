@@ -50,12 +50,12 @@ begin
     outG2 <= G2; 
     outH2 <= H2; 
     AluF <= E1 or F1 or G1 or H1 or E2 or F2 or G2 or H2;
-    E_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , MEM_WB_dst1 , dst1 , dst1Exist , E1);
-    F_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , MEM_WB_dst1 , dst2 , dst2Exist , F1);
-    G_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , MEM_WB_dst1 , src1 , src1Exist , G1);
-    H_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , MEM_WB_dst1 , src2 , src2Exist , H1);
-    E_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , MEM_WB_dst2 , dst1 , dst1Exist , E2);
-    F_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , MEM_WB_dst2 , dst2 , dst2Exist , F2);
-    G_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , MEM_WB_dst2 , src1 , src1Exist , G2);
-    H_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , MEM_WB_dst2 , src2 , src2Exist , H2);
+    E_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , EX_MEM_dst1 , dst1 , dst1Exist , E1);
+    F_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , EX_MEM_dst1 , dst2 , dst2Exist , F1);
+    G_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , EX_MEM_dst1 , src1 , src1Exist , G1);
+    H_1:entity work.ForwardDesidor port map(EX_MEM_Ex1 , EX_MEM_dst1 , src2 , src2Exist , H1);
+    E_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , EX_MEM_dst2 , dst1 , dst1Exist , E2);
+    F_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , EX_MEM_dst2 , dst2 , dst2Exist , F2);
+    G_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , EX_MEM_dst2 , src1 , src1Exist , G2);
+    H_2:entity work.ForwardDesidor port map(EX_MEM_Ex2 , EX_MEM_dst2 , src2 , src2Exist , H2);
 end ForwardUnitArch ; -- ForwardUnitArch

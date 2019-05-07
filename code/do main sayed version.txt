@@ -1,39 +1,12 @@
 vsim -gui work.main
-# vsim -gui work.main 
-# Start time: 17:08:13 on May 07,2019
-# Loading std.standard
-# Loading std.textio(body)
-# Loading ieee.std_logic_1164(body)
-# Loading work.constants
-# Loading ieee.numeric_std(body)
-# Loading work.main(mainarch)
-# Loading work.registerfile(archregisterfile)
-# Loading work.decoder(dec)
-# Loading work.nbitregister(data_flow)
-# Loading work.custommux(archcustommux)
-# Loading work.fetch(archoffetch)
-# Loading work.ram(syncrama)
-# Loading work.pcadders(pcaddersarch)
-# Loading work.my_nadder(a_my_nadder)
-# Loading work.my_adder(a_my_adder)
-# Loading work.mux2x1(mux2x1arch)
-# Loading work.pcmux(pcmuxarch)
-# Loading work.stagedecode(de)
-# Loading work.excution(excutionarch)
-# Loading work.forwardunit(forwardunitarch)
-# Loading work.forwarddesidor(forwarddesidorarch)
-# Loading work.mux_2x1(mux_2x1arch)
-# Loading work.mux_4x1(mux_4x1arch)
-# Loading work.alu(aluarch)
-# Loading work.shifter(shifterarch)
-# Loading work.memory(archmemory)
-# Loading work.writeback(archwriteback)
-# ** Warning: (vsim-8683) Uninitialized out port /main/ExcutionStage/brashAddress(31 downto 0) has no driver.
-# This port will contribute value (UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU) to the signal network.
+
 add wave -position insertpoint  \
 sim:/main/clk \
 sim:/main/reset \
 sim:/main/int \
+sim:/main/FetchStage/IR1Out \
+sim:/main/FetchStage/IR2Out \
+sim:/main/FetchStage/pcOut \
 sim:/main/InPort \
 sim:/main/reg1 \
 sim:/main/reg2 \
@@ -62,7 +35,6 @@ sim:/main/fetchController \
 sim:/main/IF_ID_in_PcPlus1 \
 sim:/main/IF_ID_in_dummy3bits1 \
 sim:/main/IF_ID_in_dummy3bits2 \
-sim:/main/IF_ID_in_s \
 sim:/main/IF_ID_out_src1Exist \
 sim:/main/IF_ID_out_src2Exist \
 sim:/main/IF_ID_out_dst1Exist \
@@ -76,7 +48,6 @@ sim:/main/IF_ID_out_dst2 \
 sim:/main/IF_ID_out_PcPlus1 \
 sim:/main/IF_ID_out_dummy3bits1 \
 sim:/main/IF_ID_out_dummy3bits2 \
-sim:/main/IF_ID_out_s \
 sim:/main/ID_EX_in_src1Exist \
 sim:/main/ID_EX_in_src2Exist \
 sim:/main/ID_EX_in_dst1Exist \
@@ -185,11 +156,22 @@ sim:/main/MEM_WB_out_dst1Data \
 sim:/main/MEM_WB_out_dst2Data \
 sim:/main/EX_MEM_out_opCode1 \
 sim:/main/EX_MEM_out_opCode2 \
+sim:/main/WB_OUT_WB1 \
+sim:/main/WB_OUT_WB2 \
+sim:/main/WB_OUT_dst1 \
+sim:/main/WB_OUT_dst2 \
+sim:/main/WB_OUT_dataDst1 \
+sim:/main/WB_OUT_dataDst2 \
+sim:/main/SPin \
+sim:/main/SPout \
+sim:/main/PCin \
+sim:/main/PCout
 
 force -freeze sim:/main/clk 0 0, 1 {50 ps} -r 100
 force -freeze sim:/main/reset 1 0
-force -freeze sim:/main/int 0 0
-mem load -i {D:/3rd Year/Arch/structure.mem} /main/FetchStage/instructionMemory/ram
+
+mem load -i {Z:/cmp 2020/arch/project/project github/Pipeline-Processor/code/fetchMemory.mem} /main/FetchStage/instructionMemory/ram
+
 run
 force -freeze sim:/main/reset 0 0
-run
+

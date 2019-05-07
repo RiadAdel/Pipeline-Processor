@@ -2,6 +2,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.constants.all;
 entity excution is
   port (
     clk:in std_logic;-- clock
@@ -22,6 +23,9 @@ entity excution is
     MEM_WB_dst1,MEM_WB_dst2:in std_logic_vector(2 downto 0);
     MEM_WB_dst1Data,MEM_WB_dst2Data:in std_logic_vector(15 downto 0);
     MEM_WB_R1,MEM_WB_R2:in std_logic;
+
+    -- in port
+    inData:in std_logic_vector(15 downto 0);
 
     -- outputs
     brashAddress:out std_logic_vector(31 downto 0); -- PC when branshing
@@ -45,6 +49,7 @@ architecture excutionArch of excution is
     signal aluForward,memryForward:std_logic;
 
     -- Alu signals
+    signal newAlu1Inp1,newAlu2Inp1:std_logic_vector(15 downto 0);
     signal alu1Inp1,alu1Inp2,alu2Inp1,alu2Inp2:std_logic_vector(15 downto 0);
     signal alu1Outp,alu2Outp:std_logic_vector(15 downto 0);
     signal alu1A_ALUforwarding,alu1A_MEMforwarding,alu1B_ALUforwarding,alu1B_MEMforwarding,alu2A_ALUforwarding,alu2A_MEMforwarding,alu2B_ALUforwarding,alu2B_MEMforwarding:std_logic_vector(15 downto 0);
@@ -66,17 +71,17 @@ begin
     
     Nin <= negative2 when Ex2 = '1' and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
     else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010";
-    regEn <= '0' when ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010" and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
-    else '1';
+
+    regEn <= '1' when ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010" and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010" and Ex1 = '0' and Ex2 = '0'
+    else '0';
     flagRegIn <= Cin & Nin & Zin;
-    flagRegOut <= Cout & Nout & Zout;
     flagOut <= flagRegOut;
     flag_Register: entity work.nBitRegister generic map(3) port map(flagRegIn,clk,rst,regEn,flagRegOut);
     --------------------------------------------------------------
 
     -- Forward unit
     ForwardUnit: entity work.ForwardUnit port map(ID_EX_src1Exist,ID_EX_dst1Exist,ID_EX_src2Exist,ID_EX_dst2Exist
-    ,ID_EX_src1,ID_EX_dst1,ID_EX_src2,EX_MEM_dst2
+    ,ID_EX_src1,ID_EX_dst1,ID_EX_src2,ID_EX_dst2
     ,MEM_WB_R1,MEM_WB_R2,MEM_WB_dst1,MEM_WB_dst2
     ,EX_MEM_ex1,EX_MEM_ex2,EX_MEM_dst1,EX_MEM_dst2
     ,A1,B1,C1,D1,A2,B2,C2,D2
@@ -107,12 +112,15 @@ begin
     aluB1: entity work.MUX_4x1 port map(ID_EX_dst1Data,alu1B_ALUforwarding,alu1B_MEMforwarding, alu1B_ALUforwarding , alu1Inp2Selector ,alu1Inp2);
     aluA2: entity work.MUX_4x1 port map(ID_EX_src2Data,alu2A_ALUforwarding,alu2A_MEMforwarding, alu2A_ALUforwarding , alu2Inp1Selector ,alu2Inp1);
     aluB2: entity work.MUX_4x1 port map(ID_EX_dst2Data,alu2B_ALUforwarding,alu2B_MEMforwarding, alu2B_ALUforwarding , alu2Inp2Selector ,alu2Inp2);
-    
+
     aluOut1 <=alu1Outp;
     aluOut2 <=alu2Outp;
 
-
-    Alu1:entity work.ALU port map(ID_EX_aluSelector1,alu1Inp1,alu1Inp2,alu1Outp,carry1,negative1,zero1);
-    Alu2:entity work.ALU port map(ID_EX_aluSelector2,alu2inp2,alu2Inp2,alu2Outp,carry2,negative2,zero2);
+    newAlu1Inp1 <= inData when ID_EX_opCode1 = IIN
+    else alu1Inp1;
+    newAlu2Inp1 <= inData when ID_EX_opCode2 = IIN
+    else alu2Inp1;
+    Alu1:entity work.ALU port map(ID_EX_aluSelector1,newAlu1Inp1,alu1Inp2,alu1Outp,carry1,negative1,zero1);
+    Alu2:entity work.ALU port map(ID_EX_aluSelector2,newAlu2Inp1,alu2Inp2,alu2Outp,carry2,negative2,zero2);
     --------------------------------------------------------------
 end excutionArch ; -- excutionArch
