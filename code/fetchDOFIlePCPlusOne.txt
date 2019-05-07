@@ -1,0 +1,93 @@
+quit -sim
+# End time: 11:41:41 on May 07,2019, Elapsed time: 0:06:08
+# Errors: 0, Warnings: 2
+vsim -gui work.fetch
+# vsim -gui work.fetch 
+# Start time: 11:41:43 on May 07,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.fetch(archoffetch)
+# Loading work.ram(syncrama)
+# Loading work.pcadders(pcaddersarch)
+# Loading work.nbitregister(data_flow)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.mux2x1(mux2x1arch)
+# Loading work.pcmux(pcmuxarch)
+# vsim -gui work.fetch 
+# Start time: 11:35:33 on May 07,2019
+# Loading std.standard
+# Loading std.textio(body)
+# Loading ieee.std_logic_1164(body)
+# Loading ieee.numeric_std(body)
+# Loading work.fetch(archoffetch)
+# Loading work.ram(syncrama)
+# Loading work.pcadders(pcaddersarch)
+# Loading work.nbitregister(data_flow)
+# Loading work.my_nadder(a_my_nadder)
+# Loading work.my_adder(a_my_adder)
+# Loading work.mux2x1(mux2x1arch)
+# Loading work.pcmux(pcmuxarch)
+add wave -position insertpoint  \
+sim:/fetch/returnAddress \
+sim:/fetch/branchAdd \
+sim:/fetch/D2 \
+sim:/fetch/inturrupt \
+sim:/fetch/branch1 \
+sim:/fetch/branch2 \
+sim:/fetch/RTIandRET \
+sim:/fetch/S \
+sim:/fetch/ID_EX_S \
+sim:/fetch/reset \
+sim:/fetch/Bubble \
+sim:/fetch/clk \
+sim:/fetch/IR1Out \
+sim:/fetch/IR2Out \
+sim:/fetch/PcPlus1 \
+sim:/fetch/ToPcOut \
+sim:/fetch/toPcandAdder \
+sim:/fetch/pcOut \
+sim:/fetch/pcOut1 \
+sim:/fetch/pcOut2 \
+sim:/fetch/F1 \
+sim:/fetch/dataOutRam \
+sim:/fetch/dummy \
+sim:/fetch/pcEnable \
+sim:/fetch/pcReset
+# (vish-4014) No objects found matching '/fetch/toPcandAdder'.
+force -freeze sim:/fetch/returnAddress 16#0 0
+force -freeze sim:/fetch/branchAdd 16#1 0
+force -freeze sim:/fetch/D2 16#2 0
+force -freeze sim:/fetch/branch1 0 0
+force -freeze sim:/fetch/branch2 0 0
+force -freeze sim:/fetch/RTIandRET 0 0
+force -freeze sim:/fetch/S 1 0
+force -freeze sim:/fetch/reset 1 0
+force -freeze sim:/fetch/clk 1 0, 0 {50 ps} -r 100
+mem load -filltype inc -filldata 16#0 -fillradix symbolic -skip 0 /fetch/instructionMemory/ram
+run
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /fetch/instructionMemory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /fetch/instructionMemory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /fetch/instructionMemory
+# ** Warning: NUMERIC_STD.TO_INTEGER: metavalue detected, returning 0
+#    Time: 0 ps  Iteration: 0  Instance: /fetch/instructionMemory
+force -freeze sim:/fetch/reset 0 0
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
+run
