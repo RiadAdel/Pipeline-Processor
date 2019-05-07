@@ -42,21 +42,20 @@ constant RTI: std_logic_vector(4 downto 0)   :="11110";
 
 ----- alu operations-------
 
-constant ALUFEQUAL0: std_logic_vector(3 downto 0)  :="0000";
+constant ALUFEQUAL0: std_logic_vector(3 downto 0)  	:="0000";
+constant ALUNOT: std_logic_vector(3 downto 0)      	:="0001";
+constant ALUINC: std_logic_vector(3 downto 0)      	:="0010";
+constant ALUDEC: std_logic_vector(3 downto 0)      	:="0011";
+constant ALUADD: std_logic_vector(3 downto 0)      	:="0100";
+constant ALUSUB: std_logic_vector(3 downto 0)      	:="0101";
+constant ALUAND: std_logic_vector(3 downto 0)      	:="0110";
+constant ALUOR: std_logic_vector(3 downto 0)       	:="0111";
+constant ALUSHL: std_logic_vector(3 downto 0)           :="1000";
+constant ALUSHR: std_logic_vector(3 downto 0)           :="1001";
+constant ALUFEQUALB: std_logic_vector(3 downto 0)       :="1010";
+constant ALUFEQUALZZ: std_logic_vector(3 downto 0)      :="1011";
+
+
 constant ALUSETC: std_logic_vector(3 downto 0)     :="0001";
 constant ALUCLEARC: std_logic_vector(3 downto 0)   :="0010";
-constant ALUNOT: std_logic_vector(3 downto 0)      :="0011";
-constant ALUINC: std_logic_vector(3 downto 0)      :="0100";
-constant ALUDEC: std_logic_vector(3 downto 0)      :="0101";
-constant ALUADD: std_logic_vector(3 downto 0)      :="0110";
-constant ALUSUB: std_logic_vector(3 downto 0)      :="0111";
-constant ALUAND: std_logic_vector(3 downto 0)      :="1000";
-
-
-constant ALUOR: std_logic_vector(3 downto 0)       :="1001";
-constant ALUSHL: std_logic_vector(3 downto 0)      :="1010";
-constant ALUSHR: std_logic_vector(3 downto 0)      :="1011";
-constant ALUFEQUALB: std_logic_vector(3 downto 0)  :="1100";
-constant ALUFEQUALZZ: std_logic_vector(3 downto 0)  :="1101";
-
 end constants;

@@ -3,13 +3,13 @@ USE IEEE.std_logic_1164.all;
 
 ENTITY pcMux IS
 	PORT(
-		--addresses entered to the mux
+		--addresses entered to the mux                  --- returnAddress --> from RET or RTI
 		Fetch1,pcAddressPlusOne,pcAddressPlusTwo,returnAddress,
-		returnInterruptAddress,branchAdd: IN STD_LOGIC_VECTOR(19 DOWNTO 0);
+		branchAdd: IN STD_LOGIC_VECTOR(19 DOWNTO 0);
 		
 		
 		--selectors
-		inturrupt,branch,S,reset: IN STD_LOGIC;
+		inturrupt, branch1 , branch2 , RTIandRET,S,reset , clk : IN STD_LOGIC;
 		
 		--output to the pc
 		ToPcOut: OUT STD_LOGIC_VECTOR(19 DOWNTO 0)
@@ -17,22 +17,37 @@ ENTITY pcMux IS
 END ENTITY pcMux;
 
 ARCHITECTURE pcMuxArch OF pcMux IS
-	SIGNAL selection : STD_LOGIC_VECTOR(2 DOWNTO 0);
-BEGIN 
-	selection(0) <= reset after 1 ns;
-	selection(1) <= inturrupt or branch after 1 ns;
-	selection(2) <= inturrupt or (not branch and S) after 1 ns;
-
---mux logic selection ( needs to be redone )
-
-ToPcOut <= Fetch1 		when selection = "000" else
-	pcAddressPlusOne 	when selection = "001" else
-	pcAddressPlusTwo 	when selection = "010" else
-	returnAddress           when selection = "011" else
-	returnInterruptAddress  when selection = "100" else
-	branchAdd 		when selection = "101";
-
+	SIGNAL latchedRst  , Branch: std_logic ;
 	
+BEGIN 
+        Branch<= branch1 or branch2;
+	latchedRst<= '1' when reset='1' and clk'event and clk = '0' else '0';
+     
+
+
+--ToPcOut <= Fetch1	    when latchedRst = '1' else   ---- interupt condition to do --
+	--pcAddressPlusOne    when S = '1' and branch='0' and RTIandRET = '0'  else--
+	--branchAdd 	    when branch = '1' and  (RTIandRET = '0'   or (RTIandRET ='1' and branch1='1' )) else
+--	returnAddress       when RTIandRET ='1' and branch1='0' else
+--	pcAddressPlusTwo   ;--
+
+process (latchedRST,S,branch,RTIandRET,branch1)
+	
+begin
+	
+	if latchedRst = '1' then
+		ToPcOut <= Fetch1;
+	elsif  (S = '1') AND (branch='0') AND (RTIandRET = '0') then
+		ToPcOut <= pcAddressPlusOne;
+	elsif  branch = '1' and  (RTIandRET = '0'   or (RTIandRET ='1' and branch1='1' ))  then
+		ToPcOut <= branchAdd;
+	elsif  RTIandRET ='1' and branch1='0' then
+		ToPcOut <= returnAddress; 
+	else 
+		ToPcOut <= pcAddressPlusTwo;
+	end if;
+end process;
+
 
 	
 	

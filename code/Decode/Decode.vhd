@@ -16,34 +16,40 @@ ENTITY StageDecode IS
 END ENTITY StageDecode;
 
 ARCHITECTURE De OF StageDecode IS
-	
+	signal ID_EX_ALUSel1 , ID_EX_ALUSel2: std_logic_vector (3 downto 0);
+	signal Semi_S : std_logic;
 BEGIN
-ID_EX_SRC1Exist<=IF_ID_SRC1Exist;
-ID_EX_SRC2Exist<=IF_ID_SRC2Exist;
-ID_EX_DST1Exist<=IF_ID_DST1Exist;
-ID_EX_DST1Exist<=IF_ID_DST1Exist;
-ID_EX_OpCode1<=IF_ID_OpCode1;
-ID_EX_OpCode2<=IF_ID_OpCode1;
+
+S<= Semi_S;
+
+ID_EX_SRC1Exist<=IF_ID_SRC1Exist and (not Bubble );
+ID_EX_SRC2Exist<=IF_ID_SRC2Exist when Bubble = '0' and Semi_S= '0' and IF_ID_OpCode1 /= LDM  else '0';
+ID_EX_DST1Exist<=IF_ID_DST1Exist and (not Bubble );
+ID_EX_DST2Exist<=IF_ID_DST2Exist when Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  else '0';
+ID_EX_OpCode1<=IF_ID_OpCode1  when Bubble = '0' else "00000";
+ID_EX_OpCode2<=IF_ID_OpCode2 when Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  else "00000";
 
 
-ID_EX_R1 <= '1' when IF_ID_OpCode1 = POP  or IF_ID_OpCode1 = LDD or IF_ID_OpCode1 = RET or IF_ID_OpCode1=RTI else '0';
-ID_EX_R2 <= '1' when IF_ID_OpCode2 = POP  or IF_ID_OpCode2 = LDD or IF_ID_OpCode2 = RET or IF_ID_OpCode2=RTI else '0';
-ID_EX_W1 <= '1' when IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL else '0';
-ID_EX_W2 <= '1' when IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL else '0';
+ID_EX_R1 <= '1' when (IF_ID_OpCode1 = POP  or IF_ID_OpCode1 = LDD or IF_ID_OpCode1 = RET or IF_ID_OpCode1=RTI ) and ( Bubble = '0' ) else '0';
+ID_EX_R2 <= '1' when (IF_ID_OpCode2 = POP  or IF_ID_OpCode2 = LDD or IF_ID_OpCode2 = RET or IF_ID_OpCode2=RTI ) and ( Bubble = '0' and Semi_S= '0' and IF_ID_OpCode1 /= LDM  ) else '0';
+ID_EX_W1 <= '1' when (IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL )and ( Bubble = '0') else '0';
+ID_EX_W2 <= '1' when (IF_ID_OpCode1 = PUSH or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = CALL) and ( Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  ) else '0';
 
 
-ID_EX_WB1 <= '1' when  IF_ID_DST1Exist = '1' and  IF_ID_OpCode1 /= SSTD  else '0'; 
-ID_EX_WB2 <= '1' when  IF_ID_DST2Exist = '1' and  IF_ID_OpCode2 /= SSTD  else '0'; 
+ID_EX_WB1 <= '1' when  (IF_ID_DST1Exist = '1' and  IF_ID_OpCode1 /= SSTD ) and ( Bubble = '0' )  else '0'; 
+ID_EX_WB2 <= '1' when  (IF_ID_DST2Exist = '1' and  IF_ID_OpCode2 /= SSTD) and ( Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  ) else '0'; 
 
 
-S<= '1' when  ( IF_ID_Dst1 = IF_ID_Dst2   and IF_ID_DST1Exist = '1' and IF_ID_DST2Exist = '1' and IF_ID_OpCode2 /= IIN and IF_ID_OpCode2 /= POP and IF_ID_OpCode2 /= LDD  )  
+Semi_S<= '1' when  ( IF_ID_Dst1 = IF_ID_Dst2   and IF_ID_DST1Exist = '1' and IF_ID_DST2Exist = '1' and IF_ID_OpCode2 /= IIN and IF_ID_OpCode2 /= POP and IF_ID_OpCode2 /= LDD  )  
 or (IF_ID_Dst1 = IF_ID_Src2 and IF_ID_DST1Exist='1'  and IF_ID_SRC2Exist='1' )
 or (IF_ID_OpCode2 = LDM ) 
 or (IF_ID_OpCode1(4 downto 3) = "10" and IF_ID_OpCode2(4 downto 3) = "10" ) 
 or ((IF_ID_OpCode1(4 downto 3) = "00" or IF_ID_OpCode1(4 downto 3) = "01"  ) and IF_ID_OpCode1 /= NOP and IF_ID_OpCode1 /= OOUT and IF_ID_OpCode1 /= MOV and IF_ID_OpCode2(4 downto 3 )= "11"   )
 else '0';
 
-ID_EX_ALUSelection1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP or IF_ID_OpCode1=OOUT or IF_ID_OpCode1 = IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1(4 downto 3) = "10" or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
+
+
+ID_EX_ALUSel1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP or IF_ID_OpCode1=OOUT or IF_ID_OpCode1 = IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1(4 downto 3) = "10" or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
 else  ALUSETC when IF_ID_OpCode1 = SETC 
 else ALUCLEARC when IF_ID_OpCode1 = CLRC
 else ALUNOT when IF_ID_OpCode1 = NNOT
@@ -56,10 +62,11 @@ else ALUOR when IF_ID_OpCode1 = OOR
 else ALUSHL when IF_ID_OpCode1 = SHL
 else ALUSHR when IF_ID_OpCode1 = SHR  
 else ALUFEQUALB when IF_ID_OpCode1 = JZ or IF_ID_OpCode1 = JN or IF_ID_OpCode1 = JC or IF_ID_OpCode1 = CALL or IF_ID_OpCode1 = JMP
-else ALUFEQUALZZ ;
+else ALUFEQUAL0;
 
+ID_EX_ALUSelection1<= ID_EX_ALUSel1 when Bubble = '0' else ALUFEQUAL0;
 
-ID_EX_ALUSelection2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or IF_ID_OpCode2=OOUT or IF_ID_OpCode2 = IIN or IF_ID_OpCode2 = MOV or IF_ID_OpCode2(4 downto 3) = "10" or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
+ID_EX_ALUSel2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or IF_ID_OpCode2=OOUT or IF_ID_OpCode2 = IIN or IF_ID_OpCode2 = MOV or IF_ID_OpCode2(4 downto 3) = "10" or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
 else  ALUSETC when IF_ID_OpCode2 = SETC 
 else ALUCLEARC when IF_ID_OpCode2 = CLRC
 else ALUNOT when IF_ID_OpCode2 = NNOT
@@ -72,9 +79,9 @@ else ALUOR when IF_ID_OpCode2 = OOR
 else ALUSHL when IF_ID_OpCode2 = SHL
 else ALUSHR when IF_ID_OpCode2 = SHR  
 else ALUFEQUALB when IF_ID_OpCode2 = JZ or IF_ID_OpCode2 = JN or IF_ID_OpCode2 = JC or IF_ID_OpCode2 = CALL or IF_ID_OpCode2 = JMP
-else ALUFEQUALZZ ;
+else ALUFEQUAL0 ;
 
 
-
+ID_EX_ALUSelection2<= ID_EX_ALUSel2 when Bubble = '0' and Semi_S = '0' and IF_ID_OpCode1 /= LDM  else ALUFEQUAL0;
 	
 END De;
