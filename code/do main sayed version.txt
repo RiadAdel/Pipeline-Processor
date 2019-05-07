@@ -59,6 +59,9 @@ add wave -position insertpoint  \
 sim:/main/clk \
 sim:/main/reset \
 sim:/main/int \
+sim:/main/FetchStage/IR1Out \
+sim:/main/FetchStage/IR2Out \
+sim:/main/FetchStage/pcOut \
 sim:/main/InPort \
 sim:/main/reg1 \
 sim:/main/reg2 \
@@ -221,5 +224,6 @@ sim:/main/PCout
 force -freeze sim:/main/clk 0 0, 1 {50 ps} -r 100
 force -freeze sim:/main/reset 1 0
 mem load -i {Z:/cmp 2020/arch/project/project github/Pipeline-Processor/code/fetchMemory.mem} /main/FetchStage/instructionMemory/ram
-
+run
+force -freeze sim:/main/reset 0 0
 

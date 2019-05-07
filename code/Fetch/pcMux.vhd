@@ -32,7 +32,7 @@ begin
 	
 	if latchedRst = '1' then
 		ToPcOut <= Fetch1;
-	elsif  (S = '1') AND (branch='0') AND (RTIandRET = '0') then
+	elsif  (falling_edge(S) or  S = '1' ) AND (branch='0') AND (RTIandRET = '0') then
 		ToPcOut <= pcAddressPlusOne;
 	elsif  branch = '1' and  (RTIandRET = '0'   or (RTIandRET ='1' and branch1='1' ))  then
 		ToPcOut <= branchAdd;

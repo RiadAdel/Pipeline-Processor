@@ -101,7 +101,7 @@ begin
     ,IF_ID_out_dst1,IF_ID_out_dst2
     ,WB_OUT_dataDst1,WB_OUT_dataDst2
     ,ID_EX_in_src1Data,ID_EX_in_src2Data
-    ,ID_EX_in_dst1Data,ID_EX_in_dst2Data);
+    ,ID_EX_in_dst1Data,ID_EX_in_dst2Data ,reg1 , reg2 , reg3,reg4,reg5,reg6,reg7,reg8 );
   ---------------------------------------------------------------------------------------------------
   --Fetch Stage
 	dummy<=  (others=>'0');
@@ -109,19 +109,20 @@ begin
   
 FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
   ,D2 => D2
-  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> IF_ID_out_s 
+  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> fetchController 
   ,reset => reset , Bubble => '0',clk => clk 
 
-  ,IR1Out(4 downto 0) => IF_ID_in_Opcode1 
-  ,IR1Out(5) => IF_ID_in_src1Exist , IR1Out(6) => IF_ID_in_dst1Exist
-  ,IR1Out(9 downto 7) => IF_ID_in_dummy3bits1 
-  ,IR1Out(12 downto 10) => IF_ID_in_src1 
-  ,IR1Out(15 downto 13) => IF_ID_in_dst1
-  ,IR2Out(4 downto 0) => IF_ID_in_Opcode2
-  ,IR2Out(5) => IF_ID_in_src2Exist , IR2Out(6) => IF_ID_in_dst2Exist
-  ,IR2Out(9 downto 7) => IF_ID_in_dummy3bits2
-  ,IR2Out(12 downto 10) => IF_ID_in_src2
-  ,IR2Out(15 downto 13) => IF_ID_in_dst2
+  ,IR1Out(15 downto 11) => IF_ID_in_Opcode1 
+  ,IR1Out(10) => IF_ID_in_src1Exist , IR1Out(9) => IF_ID_in_dst1Exist
+  ,IR1Out(8 downto 6) => IF_ID_in_dummy3bits1 
+  ,IR1Out(5 downto 3) => IF_ID_in_src1 
+  ,IR1Out(2 downto 0) => IF_ID_in_dst1
+
+  ,IR2Out(15 downto 11) => IF_ID_in_Opcode2
+  ,IR2Out(10) => IF_ID_in_src2Exist , IR2Out(9) => IF_ID_in_dst2Exist
+  ,IR2Out(8 downto 6) => IF_ID_in_dummy3bits2
+  ,IR2Out(5 downto 3) => IF_ID_in_src2
+  ,IR2Out(2 downto 0) => IF_ID_in_dst2
 
   ,PcPlus1 => IF_ID_in_PcPlus1 );
 
@@ -313,7 +314,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     );
 --    -------------------------------------------------------------------------------------------------
 --
---    -- WriteBack Stage
+--   -- WriteBack Stage
 --    WriteBackStage:entity work.WriteBack port map (
 --      MEM_WB_out_WB1, MEM_WB_out_WB2,
 --      MEM_WB_out_dst1, MEM_WB_out_dst2,

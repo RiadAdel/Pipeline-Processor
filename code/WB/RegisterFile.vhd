@@ -12,7 +12,8 @@ ENTITY registerFile IS
 		dst1, dst2 		 : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		data1,data2 		 : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		dataSrc1, dataSrc2 	 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		dataDst1, dataDst2 	 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+		dataDst1, dataDst2 	 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		outR0 , outR1 , outR2 , outR3 , outR4 , outR5 , outR6 , outR7 : out STD_LOGIC_VECTOR(15 DOWNTO 0)
 	);
 END ENTITY registerFile;
 
@@ -29,7 +30,17 @@ BEGIN
 	decWB1:entity work.Decoder generic map (n=>3, m=>8) port map(WB1, add1, decWB1OUT);
 	decWB2:entity work.Decoder generic map (n=>3, m=>8) port map(WB2, add2, decWB2OUT);
 	decWBsORed <= decWB1OUT OR decWB2OUT;
-	
+	outR0<= R0out;
+	outR1<= R1out;
+	outR2<= R2out;
+	outR3<= R3out;
+	outR4<= R4out;
+	outR5<= R5out;
+	outR6<= R6out;
+	outR7<= R7out;
+
+
+
 	--each registers input
 	R0in <= data1 WHEN decWB1OUT(0) = '1' ELSE data2 WHEN decWB2OUT(0) = '1' ELSE (OTHERS => '0');
 	R1in <= data1 WHEN decWB1OUT(1) = '1' ELSE data2 WHEN decWB2OUT(1) = '1' ELSE (OTHERS => '0');
