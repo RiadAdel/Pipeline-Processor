@@ -38,23 +38,22 @@ END component;
 ---signals
 
 SIGNAL cout1,cout2:std_logic;
-SIGNAL pcin1,pcOut1,pcOut2:std_logic_vector(19 downto 0);
+
 SIGNAL registerIn,RegisterOut:std_logic_vector(31 downto 0);
 
 
 BEGIN 
 
 	pc: nBitRegister  generic map ( 32 )  port map (registerIn,clk,reset,enable,registerOut); --"0000000000000001"
-	add1: my_nadder   generic map ( 20 )  port map (registerOut(19 downto 0),"00000000000000000001",'0',pcOut1,cout1);
-	add2: my_nadder   generic map ( 20 )  port map (registerOut(19 downto 0),"00000000000000000010",'0',pcout2,cout2);
+	add1: my_nadder   generic map ( 20 )  port map (registerOut(19 downto 0),"00000000000000000001",'0',pcOutplus1,cout1);
+	add2: my_nadder   generic map ( 20 )  port map (registerOut(19 downto 0),"00000000000000000010",'0',pcOutplus2,cout2);
 
-pcin1 <= pcin;		
+
+	
 registerIn(19 downto 0) <= pcin;
 registerIn(31 downto 20) <= (others => '0');
 pcOut <= registerOut(19 downto 0);
 
-pcOutplus1 <= pcOut1;-- after 1 ns;
-pcOutPlus2 <= pcout2;-- after 1 ns;
 
 
 END pcAddersArch;

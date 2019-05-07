@@ -21,12 +21,14 @@ architecture mainArch of main is
     signal fetchController:std_logic; -- S
     signal IF_ID_in_PcPlus1: STD_LOGIC_VECTOR(19 DOWNTO 0);
     signal IF_ID_in_dummy3bits1,IF_ID_in_dummy3bits2: std_logic_vector(2 downto 0);
+    signal IF_ID_in_s:std_logic;
     -- IF/ID outputs
     signal IF_ID_out_src1Exist,IF_ID_out_src2Exist,IF_ID_out_dst1Exist,IF_ID_out_dst2Exist:std_logic;
     signal IF_ID_out_Opcode1,IF_ID_out_Opcode2:std_logic_vector(4 downto 0);
     signal IF_ID_out_src1,IF_ID_out_dst1,IF_ID_out_src2,IF_ID_out_dst2:std_logic_vector(2 downto 0);
     signal IF_ID_out_PcPlus1: STD_LOGIC_VECTOR(19 DOWNTO 0);
     signal IF_ID_out_dummy3bits1,IF_ID_out_dummy3bits2: std_logic_vector(2 downto 0);
+    signal IF_ID_out_s:std_logic;
     -------------------------------------------------------------------------------------------------
     
       -- ID/EX inputs
@@ -107,7 +109,7 @@ begin
   
 FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
   ,D2 => D2
-  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> '0' 
+  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> IF_ID_out_s 
   ,reset => reset , Bubble => '0',clk => clk 
 
   ,IR1Out(4 downto 0) => IF_ID_in_Opcode1 
@@ -133,6 +135,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       , D(45 downto 26) => IF_ID_in_PcPlus1                       -- 12 bit
       , D(48 downto 46) => IF_ID_in_dummy3bits1
       , D(51 downto 49) => IF_ID_in_dummy3bits2
+      , D(52) => IF_ID_in_s
       ,clk => clk                                                                              
       ,rst => reset                                                                            
       ,en => '1'                                                                              
@@ -142,6 +145,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,Q(45 downto 26) => IF_ID_out_PcPlus1
       ,Q(48 downto 46) => IF_ID_out_dummy3bits1
       ,Q(51 downto 49) => IF_ID_out_dummy3bits2
+      ,Q(52) => IF_ID_out_s
       );
 
 	    -------------------------------------------------------------------------------------------------
@@ -161,6 +165,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ID_EX_in_dst1 <= IF_ID_out_dst1;
       ID_EX_in_src2 <= IF_ID_out_src2;
       ID_EX_in_dst2 <= IF_ID_out_dst2;
+      IF_ID_in_s <= fetchController
     -------------------------------------------------------------------------------------------------
 
     -- ID/EX register

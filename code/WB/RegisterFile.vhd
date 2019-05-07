@@ -31,14 +31,14 @@ BEGIN
 	decWBsORed <= decWB1OUT OR decWB2OUT;
 	
 	--each registers input
-	R0in <= data1 WHEN decWB1OUT(0) = '1' ELSE data2 WHEN decWB2OUT(0) = '1' ELSE (OTHERS => 'Z');
-	R1in <= data1 WHEN decWB1OUT(1) = '1' ELSE data2 WHEN decWB2OUT(1) = '1' ELSE (OTHERS => 'Z');
-	R2in <= data1 WHEN decWB1OUT(2) = '1' ELSE data2 WHEN decWB2OUT(2) = '1' ELSE (OTHERS => 'Z');
-	R3in <= data1 WHEN decWB1OUT(3) = '1' ELSE data2 WHEN decWB2OUT(3) = '1' ELSE (OTHERS => 'Z');
-	R4in <= data1 WHEN decWB1OUT(4) = '1' ELSE data2 WHEN decWB2OUT(4) = '1' ELSE (OTHERS => 'Z');
-	R5in <= data1 WHEN decWB1OUT(5) = '1' ELSE data2 WHEN decWB2OUT(5) = '1' ELSE (OTHERS => 'Z');
-	R6in <= data1 WHEN decWB1OUT(6) = '1' ELSE data2 WHEN decWB2OUT(6) = '1' ELSE (OTHERS => 'Z');
-	R7in <= data1 WHEN decWB1OUT(7) = '1' ELSE data2 WHEN decWB2OUT(7) = '1' ELSE (OTHERS => 'Z');
+	R0in <= data1 WHEN decWB1OUT(0) = '1' ELSE data2 WHEN decWB2OUT(0) = '1' ELSE (OTHERS => '0');
+	R1in <= data1 WHEN decWB1OUT(1) = '1' ELSE data2 WHEN decWB2OUT(1) = '1' ELSE (OTHERS => '0');
+	R2in <= data1 WHEN decWB1OUT(2) = '1' ELSE data2 WHEN decWB2OUT(2) = '1' ELSE (OTHERS => '0');
+	R3in <= data1 WHEN decWB1OUT(3) = '1' ELSE data2 WHEN decWB2OUT(3) = '1' ELSE (OTHERS => '0');
+	R4in <= data1 WHEN decWB1OUT(4) = '1' ELSE data2 WHEN decWB2OUT(4) = '1' ELSE (OTHERS => '0');
+	R5in <= data1 WHEN decWB1OUT(5) = '1' ELSE data2 WHEN decWB2OUT(5) = '1' ELSE (OTHERS => '0');
+	R6in <= data1 WHEN decWB1OUT(6) = '1' ELSE data2 WHEN decWB2OUT(6) = '1' ELSE (OTHERS => '0');
+	R7in <= data1 WHEN decWB1OUT(7) = '1' ELSE data2 WHEN decWB2OUT(7) = '1' ELSE (OTHERS => '0');
 
 	--Registers 0->7
 	R0:entity work.nBitRegister generic map (16) port map (R0in, CLK, RST, decWBsORed(0), R0out);
