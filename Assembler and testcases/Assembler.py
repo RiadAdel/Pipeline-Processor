@@ -119,7 +119,9 @@ for i in range(0, len(command)):
         opr2 = ""
         currentAddress = address
         if (instr == ".org"):
-            address = int(commandList[1]) - 1
+            x = "0x" + commandList[1]
+            i = int(x, 16)
+            address = i - 1
         elif(len(commandList) == 2):	#[mov "ro,r1"] or [inc "r1"]
             if(',' in commandList[1]):
                 opr1 = commandList[1].split(",")[0]
