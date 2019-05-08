@@ -28,18 +28,20 @@ entity excution is
     inData:in std_logic_vector(15 downto 0);
 
     -- outputs
-    brashAddress:out std_logic_vector(31 downto 0); -- PC when branshing
+    branshAddress:out std_logic_vector(31 downto 0); -- PC when branshing
     aluOut1,aluOut2:out std_logic_vector(15 downto 0); -- goes to EX_MEM_dst1Data,EX_MEM_dst2Data
     flagOut:out std_logic_vector(2 downto 0);
     Ex1_out,Ex2_out:out std_logic;
-    src1,src2:out std_logic_vector(15 downto 0)
+    src1,src2:out std_logic_vector(15 downto 0);
+    flush:out std_logic
     ) ;
 end excution;
 
 architecture excutionArch of excution is
 
+    signal jmp1 , jmp2:std_logic;
     signal Ex1,Ex2:std_logic;
-    -- flag Register signals
+  -- flag Register signals
     signal carry1,zero1,negative1,carry2,zero2,negative2,regEn:std_logic;
     signal Cin,Nin,Zin,Cout,Nout,Zout:std_logic;
     signal flagRegIn,flagRegOut:std_logic_vector(2 downto 0);
@@ -56,6 +58,19 @@ architecture excutionArch of excution is
     signal alu1A_ALUforwarding,alu1A_MEMforwarding,alu1B_ALUforwarding,alu1B_MEMforwarding,alu2A_ALUforwarding,alu2A_MEMforwarding,alu2B_ALUforwarding,alu2B_MEMforwarding:std_logic_vector(15 downto 0);
     signal alu1Inp1Selector,alu1Inp2Selector, alu2Inp1Selector ,alu2Inp2Selector:std_logic_vector(1 downto 0);
 begin
+    -- Bransh
+    jmp1 <= '1' when (ID_EX_opCode1 = JZ and Zout = '1') or (ID_EX_opCode1 = JN and Nout = '1') or (ID_EX_opCode1 = JC and Cout = '1') or (ID_EX_opCode1 = JMP)
+    else '0';
+    jmp2 <= '1' when (ID_EX_opCode2 = JZ and Zout = '1') or (ID_EX_opCode2 = JN and Nout = '1') or (ID_EX_opCode2 = JC and Cout = '1') or (ID_EX_opCode2 = JMP)
+    else '0';
+    
+    flush <= jmp1 or jmp2;
+
+    branshAddress <= newAlu2Inp1 when jmp2 = '1'
+    else newAlu1Inp1 when jmp1 = '1'
+    else (others => '0');
+    --------------------------------------------------------------
+
     -- Ex signal
     Ex1 <= ID_EX_WB1 and (not ID_EX_R1);
     Ex2 <= ID_EX_WB2 and (not ID_EX_R2);
@@ -64,18 +79,26 @@ begin
     --------------------------------------------------------------
 
     -- Flag Register
-    Cin <= carry2 when Ex2 = '1' and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
-    else carry1 when Ex1 = '1' and ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010";
+    Cin <= carry2 when (Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA) or ID_EX_aluSelector2 = ALUSETC or ID_EX_aluSelector2 = ALUCLEARC
+    else carry1 when (Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA)   or ID_EX_aluSelector1 = ALUSETC or ID_EX_aluSelector1 = ALUCLEARC;
     
-    Zin <= zero2 when Ex2 = '1' and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
-    else zero1 when Ex1 = '1' and ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010";
+    Zin <= zero2 when Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA
+    else zero1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA;
     
-    Nin <= negative2 when Ex2 = '1' and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010"
-    else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010";
+    Nin <= negative2 when Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA
+    else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA;
 
-    regEn <= '1' when ID_EX_aluSelector1 /= "0000" and ID_EX_aluSelector1 /= "1010" and ID_EX_aluSelector2 /= "0000" and ID_EX_aluSelector2 /= "1010" and Ex1 = '0' and Ex2 = '0'
+    regEn <= '1' when (Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA) or
+                      (Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA)
+    else '1' when ID_EX_aluSelector1 = ALUSETC or ID_EX_aluSelector1 = ALUCLEARC or ID_EX_aluSelector2 = ALUSETC or ID_EX_aluSelector2 = ALUCLEARC
     else '0';
+
     flagRegIn <= Cin & Nin & Zin;
+
+    Cout <= flagRegOut(2);
+    Nout <= flagRegOut(1);
+    Zout <= flagRegOut(0);
+
     flagOut <= flagRegOut;
     flag_Register: entity work.nBitRegister generic map(3) port map(flagRegIn,clk,rst,regEn,flagRegOut);
     --------------------------------------------------------------
