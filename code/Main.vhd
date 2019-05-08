@@ -224,12 +224,11 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,EX_MEM_in_dst1Data,EX_MEM_in_dst2Data
       ,flagRegister
       ,EX_MEM_in_ex1,EX_MEM_in_ex2
+      ,EX_MEM_in_src1Data,EX_MEM_in_src2Data
     );
     -- passing data
     EX_MEM_in_opCode1 <= ID_EX_out_Opcode1;
     EX_MEM_in_opCode2 <= ID_EX_out_Opcode2;
-    EX_MEM_in_src1Data <= ID_EX_out_src1Data;
-    EX_MEM_in_src2Data <=ID_EX_out_src2Data;
     EX_MEM_in_src1 <= ID_EX_out_src1;
     EX_MEM_in_src2 <= ID_EX_out_src2;
     EX_MEM_in_dst1 <= ID_EX_out_dst1;

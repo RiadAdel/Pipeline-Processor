@@ -31,7 +31,8 @@ entity excution is
     brashAddress:out std_logic_vector(31 downto 0); -- PC when branshing
     aluOut1,aluOut2:out std_logic_vector(15 downto 0); -- goes to EX_MEM_dst1Data,EX_MEM_dst2Data
     flagOut:out std_logic_vector(2 downto 0);
-    Ex1_out,Ex2_out:out std_logic
+    Ex1_out,Ex2_out:out std_logic;
+    src1,src2:out std_logic_vector(15 downto 0)
     ) ;
 end excution;
 
@@ -115,7 +116,8 @@ begin
 
     aluOut1 <=alu1Outp;
     aluOut2 <=alu2Outp;
-
+    src1 <= newAlu1Inp1;
+    src2 <= newAlu2Inp1;
     newAlu1Inp1 <= inData when ID_EX_opCode1 = IIN
     else alu1Inp1;
     newAlu2Inp1 <= inData when ID_EX_opCode2 = IIN
