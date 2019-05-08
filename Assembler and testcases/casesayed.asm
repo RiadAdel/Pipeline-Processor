@@ -13,6 +13,7 @@ inc R1
 inc R2
 STD R1 , R2
 STD R1 , R3
+STD R1 , R3
 
 
 
