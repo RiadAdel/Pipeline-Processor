@@ -9,4 +9,7 @@
 100
 
 .ORG 2
-SETC 
+inc R1         #R1 =0001 , C--> 0, N --> 0, Z -->  0
+inc R2	       #R2 =0001 , C --> 0 , N --> 0 , Z --> 0
+sub R2,R1	       #R2= FFEF, C--> no change, N -->1,Z-->0
+JC R3

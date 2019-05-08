@@ -81,6 +81,6 @@ begin
   Z <= '1' when outp = "0000000000000000" and s /= ALUFEQUAL0 and s /= ALUFEQUALB and s /= ALUFEQUALA 
   else '0' when s /= ALUFEQUAL0 and s /= ALUFEQUALB and s /= ALUFEQUALA;
 
-  Ni <= '1' when outp(15) = '0' and s /= ALUFEQUAL0 and s /= ALUFEQUALB and s /= ALUFEQUALA
+  Ni <= '1' when outp(15) = '1' and s /= ALUFEQUAL0 and s /= ALUFEQUALB and s /= ALUFEQUALA
   else '0' when s /= ALUFEQUAL0 and s /= ALUFEQUALB and s /= ALUFEQUALA;
 end ALUArch ;

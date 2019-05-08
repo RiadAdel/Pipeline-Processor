@@ -33,7 +33,7 @@ entity excution is
     flagOut:out std_logic_vector(2 downto 0);
     Ex1_out,Ex2_out:out std_logic;
     src1,src2:out std_logic_vector(15 downto 0);
-    flush:out std_logic
+    j1,j2,flush:out std_logic
     ) ;
 end excution;
 
@@ -57,17 +57,22 @@ architecture excutionArch of excution is
     signal alu1Outp,alu2Outp:std_logic_vector(15 downto 0);
     signal alu1A_ALUforwarding,alu1A_MEMforwarding,alu1B_ALUforwarding,alu1B_MEMforwarding,alu2A_ALUforwarding,alu2A_MEMforwarding,alu2B_ALUforwarding,alu2B_MEMforwarding:std_logic_vector(15 downto 0);
     signal alu1Inp1Selector,alu1Inp2Selector, alu2Inp1Selector ,alu2Inp2Selector:std_logic_vector(1 downto 0);
+	
+	signal br1,br2:std_logic_vector(31 downto 0);
 begin
     -- Bransh
+    j1 <= jmp1;
+    j2 <= jmp2;
     jmp1 <= '1' when (ID_EX_opCode1 = JZ and Zout = '1') or (ID_EX_opCode1 = JN and Nout = '1') or (ID_EX_opCode1 = JC and Cout = '1') or (ID_EX_opCode1 = JMP)
     else '0';
     jmp2 <= '1' when (ID_EX_opCode2 = JZ and Zout = '1') or (ID_EX_opCode2 = JN and Nout = '1') or (ID_EX_opCode2 = JC and Cout = '1') or (ID_EX_opCode2 = JMP)
     else '0';
     
     flush <= jmp1 or jmp2;
-
-    branshAddress <= newAlu2Inp1 when jmp2 = '1'
-    else newAlu1Inp1 when jmp1 = '1'
+	br1 <= "0000000000000000" & newAlu1Inp1;
+	br2 <= "0000000000000000" & newAlu2Inp1;
+    branshAddress <= br2 when jmp2 = '1'
+    else br1 when jmp1 = '1'
     else (others => '0');
     --------------------------------------------------------------
 
@@ -80,14 +85,17 @@ begin
 
     -- Flag Register
     Cin <= carry2 when (Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA) or ID_EX_aluSelector2 = ALUSETC or ID_EX_aluSelector2 = ALUCLEARC
-    else carry1 when (Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA)   or ID_EX_aluSelector1 = ALUSETC or ID_EX_aluSelector1 = ALUCLEARC;
-    
+    else carry1 when (Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA)   or ID_EX_aluSelector1 = ALUSETC or ID_EX_aluSelector1 = ALUCLEARC
+    else '0' when rst = '1';
+
     Zin <= zero2 when Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA
-    else zero1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA;
+    else zero1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA
+    else '0' when rst = '1';
     
     Nin <= negative2 when Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA
-    else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA;
-
+    else negative1 when Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA
+    else '0' when rst = '1';
+    
     regEn <= '1' when (Ex2 = '1' and ID_EX_aluSelector2 /= ALUFEQUAL0 and ID_EX_aluSelector2 /= ALUFEQUALB and ID_EX_aluSelector2 /= ALUFEQUALA) or
                       (Ex1 = '1' and ID_EX_aluSelector1 /= ALUFEQUAL0 and ID_EX_aluSelector1 /= ALUFEQUALB and ID_EX_aluSelector1 /= ALUFEQUALA)
     else '1' when ID_EX_aluSelector1 = ALUSETC or ID_EX_aluSelector1 = ALUCLEARC or ID_EX_aluSelector2 = ALUSETC or ID_EX_aluSelector2 = ALUCLEARC
