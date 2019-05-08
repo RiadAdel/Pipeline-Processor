@@ -11,9 +11,9 @@
 .ORG 2
 inc R1
 inc R2
-STD R1 , R2
-STD R1 , R3
-STD R1 , R3
+STD R1 , R2 
+STD R2 , R0
+LDD R2 , R3
 
 
 
