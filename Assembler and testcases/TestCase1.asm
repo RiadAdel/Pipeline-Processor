@@ -9,6 +9,8 @@
 100
 
 .ORG 2
-inc R1
-SETC
-CLRC
+in R1          #R1 =1000 , C--> 0, N --> 0, Z -->  0
+inc R2	       #R2 =0001 , C --> 0 , N --> 0 , Z --> 0
+Add R1,R2	   #R2= 1001, C--> 0, N -->0 , Z-->0
+Sub R2,R3      #R3 = FFFF , C --> 0 , N --> 1 ,z  -->0
+OUT R3

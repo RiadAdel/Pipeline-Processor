@@ -15,6 +15,7 @@ architecture mainArch of main is
     signal D2: std_logic_vector(15 downto 0);
     signal flagRegister:std_logic_vector(2 downto 0);
     signal branshAddress:std_logic_vector(31 downto 0);
+    signal jump1,jump2,flush:std_logic;
     -- IF/ID inputs
     signal IF_ID_in_src1Exist,IF_ID_in_src2Exist,IF_ID_in_dst1Exist,IF_ID_in_dst2Exist:std_logic;
     signal IF_ID_in_Opcode1,IF_ID_in_Opcode2:std_logic_vector(4 downto 0);
@@ -112,9 +113,9 @@ begin
 	dummy<=  (others=>'0');
 	D2<=IF_ID_out_Opcode2 &IF_ID_out_src2Exist&IF_ID_out_dst2Exist&IF_ID_out_dummy3bits2&IF_ID_out_src2&IF_ID_out_dst2;
   
-FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => dummy
+FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => branshAddress(19 downto 0)
   ,D2 => D2
-  ,inturrupt => int , branch1 => '0' , branch2 => '0' , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> ID_EX_out_s 
+  ,inturrupt => int , branch1 => jump1 , branch2 => jump2 , RTIandRET	=> '0' , S => fetchController , ID_EX_S=> ID_EX_out_s 
   ,reset => reset , Bubble => '0',clk => clk 
 
   ,IR1Out(15 downto 11) => IF_ID_in_Opcode1 
@@ -225,6 +226,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
       ,flagRegister
       ,EX_MEM_in_ex1,EX_MEM_in_ex2
       ,EX_MEM_in_src1Data,EX_MEM_in_src2Data
+      ,jump1,jump2,flush
     );
     -- passing data
     EX_MEM_in_opCode1 <= ID_EX_out_Opcode1;
