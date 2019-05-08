@@ -8,7 +8,7 @@ ENTITY memory IS
 		EX_MEM_dataSrc1, EX_MEM_dataSrc2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		EX_MEM_dataDst1, EX_MEM_dataDst2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		SP : IN STD_LOGIC_VECTOR(19 DOWNTO 0);
-		INSTR  : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
+		EX_MEM_Opcode1 , EX_MEM_Opcode2  : IN STD_LOGIC_VECTOR(4 DOWNTO 0);
 		R1, R2 : IN  STD_LOGIC;
 		W1, W2 : IN  STD_LOGIC;
 		MEM_WB_dataDst1, MEM_WB_dataDst2 : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
@@ -16,7 +16,7 @@ ENTITY memory IS
 END ENTITY memory;
 
 ARCHITECTURE archMemory OF memory IS
-	SIGNAL muxSelection : STD_LOGIC_VECTOR(2 DOWNTO 0);
+	
 	-- data RAM Signals
     	signal dataRam_W,dataRam_R : std_logic;
     	signal dataRam_addressToMemory : std_logic_vector(19 downto 0);
@@ -26,16 +26,14 @@ ARCHITECTURE archMemory OF memory IS
 
 BEGIN 
 	
-	-- m7tag yt3ml lsa
-	muxSelection(0) <= R1 AND (NOT R2);
-	muxSelection(1) <= W1 AND (NOT W2);
-	muxSelection(2) <= '1' WHEN (INSTR = PUSH OR INSTR = POP OR INSTR = PUSH OR INSTR = RET OR INSTR = RTI) ELSE '0';
-
-	dataRam_addressToMemory <= ("0000" & EX_MEM_dataSrc1) WHEN muxSelection = "000" 
-	ELSE ("0000" & EX_MEM_dataSrc2) WHEN muxSelection = "001"
-	ELSE ("0000" & EX_MEM_dataDst1) WHEN muxSelection = "010"
-	ELSE ("0000" & EX_MEM_dataDst2) WHEN muxSelection = "011"
-	ELSE SP WHEN muxSelection = "100";
+	
+        
+	dataRam_addressToMemory <= ("0000" & EX_MEM_dataSrc1) WHEN EX_MEM_Opcode1 = LDD
+	ELSE ("0000" & EX_MEM_dataSrc2) WHEN EX_MEM_Opcode2 = LDD
+	ELSE ("0000" & EX_MEM_dataDst1) WHEN EX_MEM_Opcode1 = SSTD
+	ELSE ("0000" & EX_MEM_dataDst2) WHEN EX_MEM_Opcode2 = SSTD
+	ELSE SP WHEN EX_MEM_Opcode1=PUSH or EX_MEM_Opcode1 = POP or EX_MEM_Opcode1 = CALL or EX_MEM_Opcode1 = RET or EX_MEM_Opcode1 = RTI
+	or EX_MEM_Opcode2=PUSH or EX_MEM_Opcode2 = POP or EX_MEM_Opcode2 = CALL or EX_MEM_Opcode2 = RET or EX_MEM_Opcode2 = RTI ;
 
 	--	y-latch nafso wla la => a5ly tany condition else bs (all)
 	dataRam_dataToMemory <= EX_MEM_dataSrc1 WHEN W2 = '0' ELSE EX_MEM_dataSrc2 WHEN W2 = '1';

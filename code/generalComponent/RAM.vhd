@@ -27,7 +27,7 @@ ARCHITECTURE syncrama OF Ram IS
 			BEGIN
 				k := -16;
 				j := -1;
-				IF rising_edge(CLK) THEN  
+				IF falling_edge(CLK) THEN  
 					IF W = '1' THEN
 						ram(to_integer(unsigned(address))) <= dataIn;
 					END IF;

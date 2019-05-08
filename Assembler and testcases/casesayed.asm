@@ -10,14 +10,10 @@
 
 .ORG 2
 inc R1
-inc R1
-inc R1
-inc R1
-inc R1
-inc R1
-inc R1
-inc R1
-inc R1
-inc R1
+inc R2
+STD R1 , R2
+STD R1 , R3
+
+
 
 

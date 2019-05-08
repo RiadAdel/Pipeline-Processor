@@ -51,7 +51,7 @@ else '0';
 
 
 
-ID_EX_ALUSel1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP  or IF_ID_OpCode1(4 downto 3) = "10" or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
+ID_EX_ALUSel1 <= ALUFEQUAL0 when IF_ID_OpCode1 = NOP  or  ((IF_ID_OpCode1(4 downto 3) = "10") and IF_ID_OpCode1/=SSTD and IF_ID_OpCode1 /=PUSH )  or IF_ID_OpCode1 = RTI or IF_ID_OpCode1 = RET 
 else  ALUSETC when IF_ID_OpCode1 = SETC 
 else ALUCLEARC when IF_ID_OpCode1 = CLRC
 else ALUNOT when IF_ID_OpCode1 = NNOT
@@ -64,12 +64,12 @@ else ALUOR when IF_ID_OpCode1 = OOR
 else ALUSHL when IF_ID_OpCode1 = SHL
 else ALUSHR when IF_ID_OpCode1 = SHR  
 else ALUFEQUALA when IF_ID_OpCode1= IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1 = OOUT
-else ALUFEQUALB when IF_ID_OpCode1 = JZ or IF_ID_OpCode1 = JN or IF_ID_OpCode1 = JC or IF_ID_OpCode1 = CALL or IF_ID_OpCode1 = JMP
+else ALUFEQUALB when IF_ID_OpCode1 = JZ or IF_ID_OpCode1 = JN or IF_ID_OpCode1 = JC or IF_ID_OpCode1 = CALL or IF_ID_OpCode1 = JMP or IF_ID_OpCode1 = SSTD or IF_ID_OpCode1 = PUSH
 else ALUFEQUAL0;
 
 ID_EX_ALUSelection1<= ID_EX_ALUSel1 when Bubble = '0' else ALUFEQUAL0;
 
-ID_EX_ALUSel2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or IF_ID_OpCode2(4 downto 3) = "10" or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
+ID_EX_ALUSel2 <= ALUFEQUAL0 when IF_ID_OpCode2 = NOP or ((IF_ID_OpCode2(4 downto 3) = "10") and IF_ID_OpCode2/= SSTD and IF_ID_OpCode2 /= PUSH) or IF_ID_OpCode2 = RTI or IF_ID_OpCode2 = RET 
 else  ALUSETC when IF_ID_OpCode2 = SETC 
 else ALUCLEARC when IF_ID_OpCode2 = CLRC
 else ALUNOT when IF_ID_OpCode2 = NNOT
@@ -82,7 +82,7 @@ else ALUOR when IF_ID_OpCode2 = OOR
 else ALUSHL when IF_ID_OpCode2 = SHL
 else ALUSHR when IF_ID_OpCode2 = SHR  
 else ALUFEQUALA when IF_ID_OpCode2= IIN or IF_ID_OpCode1 = MOV or IF_ID_OpCode1 = OOUT
-else ALUFEQUALB when IF_ID_OpCode2 = JZ or IF_ID_OpCode2 = JN or IF_ID_OpCode2 = JC or IF_ID_OpCode2 = CALL or IF_ID_OpCode2 = JMP
+else ALUFEQUALB when IF_ID_OpCode2 = JZ or IF_ID_OpCode2 = JN or IF_ID_OpCode2 = JC or IF_ID_OpCode2 = CALL or IF_ID_OpCode2 = JMP or IF_ID_OpCode2 = SSTD or IF_ID_OpCode2 = PUSH
 else ALUFEQUAL0 ;
 
 

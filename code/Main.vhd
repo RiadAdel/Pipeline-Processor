@@ -276,6 +276,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     ,SPout
     ----------TODO-----------------
     ,EX_MEM_out_Opcode1
+    ,EX_MEM_out_Opcode2
     ,EX_MEM_out_R1, EX_MEM_out_R2
     ,EX_MEM_out_W1, EX_MEM_out_W2
     -------------------------------
