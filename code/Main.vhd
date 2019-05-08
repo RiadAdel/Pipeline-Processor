@@ -216,7 +216,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
 
       ,MEM_WB_out_dst1,MEM_WB_out_dst2
       ,MEM_WB_out_dst1Data,MEM_WB_out_dst2Data
-      ,MEM_WB_out_R1,MEM_WB_out_R2
+      ,MEM_WB_out_WB1,MEM_WB_out_WB2
 
       ,InPort
 
@@ -288,6 +288,7 @@ FetchStage:entity work.fetch   port map (returnAddress => dummy, branchAdd => du
     MEM_WB_in_R1 <= EX_MEM_out_R1; MEM_WB_in_W1 <= EX_MEM_out_W1; MEM_WB_in_R2 <= EX_MEM_out_R2; MEM_WB_in_W2 <=EX_MEM_out_W2;
     MEM_WB_in_dst1 <= EX_MEM_out_dst1;
     MEM_WB_in_dst2 <= EX_MEM_out_dst2;
+  
     -------------------------------------------------------------------------------------------------
       
 -- MEM/WB register
